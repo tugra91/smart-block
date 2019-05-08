@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: block-mail
+logging:
+ level:
+  com:
+   predic8: WARN

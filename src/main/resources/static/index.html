@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Smart-Block - XL-Block Takip ve Yönetim Sistemi</title>
+
+      <link rel="stylesheet" href="bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	  <meta http-equiv="x-ua-compatible" content="IE=edge">
+	   
+      <style>
+      	.nav {
+      		background-color:#2A2861 !important;
+      		padding-left:25% !important
+      	}
+      	.overlay {
+		    height: 100%;
+		    width: 100%;
+		    display: none;
+		    position: fixed;
+		    z-index: 1100;
+		    top: 0;
+		    left: 0;
+		    background-color: rgb(254, 202, 109);
+		    background-color: rgba(254,202,109, 0.9);
+		}
+		.overlay-content {
+		    position: relative;
+		    top: 25%;
+		    width: 100%;
+		    text-align: center;
+		    margin-top: 30px;
+		}
+      	.sk-chasing-dots {
+		  margin: 40px auto;
+		  width: 40px;
+		  height: 40px;
+		  position: relative;
+		  text-align: center;
+		  -webkit-animation: sk-chasingDotsRotate 2s infinite linear;
+		          animation: sk-chasingDotsRotate 2s infinite linear; }
+  		.sk-chasing-dots .sk-child {
+		    width: 60%;
+		    height: 60%;
+		    display: inline-block;
+		    position: absolute;
+		    top: 0;
+		    background-color: #333;
+		    border-radius: 100%;
+		    -webkit-animation: sk-chasingDotsBounce 2s infinite ease-in-out;
+		            animation: sk-chasingDotsBounce 2s infinite ease-in-out; }
+  		.sk-chasing-dots .sk-dot2 {
+		    top: auto;
+		    bottom: 0;
+		    -webkit-animation-delay: -1s;
+		            animation-delay: -1s; }
+		@-webkit-keyframes sk-chasingDotsRotate {
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		            transform: rotate(360deg); } }
+		@keyframes sk-chasingDotsRotate {
+		  100% {
+		    -webkit-transform: rotate(360deg);
+		            transform: rotate(360deg); } }
+		@-webkit-keyframes sk-chasingDotsBounce {
+		  0%, 100% {
+		    -webkit-transform: scale(0);
+		            transform: scale(0); }
+		  50% {
+		    -webkit-transform: scale(1);
+		            transform: scale(1); } }
+		@keyframes sk-chasingDotsBounce {
+		  0%, 100% {
+		    -webkit-transform: scale(0);
+		            transform: scale(0); }
+		  50% {
+		    -webkit-transform: scale(1);
+		            transform: scale(1); } }
+      </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/javascript" src="src/bundle.js" charset="UTF-8"></script>
+  </body>
+</html>

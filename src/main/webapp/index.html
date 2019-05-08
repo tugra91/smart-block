@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Deneme</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class="container" id="app"></div>
+    <script src="../resources/src/bundle.js"></script>
+  </body>
+</html>
+
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> -->
+<!-- <html> -->
+<!-- <head> -->
+<!-- <meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> -->
+<!-- <link rel="stylesheet" media="all" -->
+<!-- 	href="/assets/application-mailer-4bd08598c1c8bad4c34c44e9ee4c2421f52d1b27bdfd5ce261c4cd16c18bb62b.css" /> -->
+<!-- <style> -->
+
+<!-- </style> -->
+<!-- </head> -->
+
+<!-- Edit the code below this line -->
+<!-- <body class="bg-light"> -->
+
+<!-- 	<div class="container"> -->
+
+<!-- 		<table class="table"> -->
+<!-- 			<thead class="thead-dark"> -->
+<!-- 				<tr> -->
+<!-- 					<th>Sistem</th> -->
+<!-- 					<th>07:00</th> -->
+<!-- 					<th>07:30</th> -->
+<!-- 					<th>08:00</th> -->
+<!-- 					<th>08:30</th> -->
+<!-- 					<th>09:00</th> -->
+<!-- 					<th>10:00</th> -->
+<!-- 					<th>10:30</th> -->
+<!-- 					<th>11:00</th> -->
+<!-- 					<th>11:30</th> -->
+<!-- 					<th>12:00</th> -->
+<!-- 					<th>12:30</th> -->
+<!-- 					<th>13:00</th> -->
+<!-- 					<th>13:30</th> -->
+<!-- 					<th>14:00</th> -->
+<!-- 					<th>14:30</th> -->
+<!-- 					<th>15:00</th> -->
+<!-- 					<th>15:30</th> -->
+<!-- 					<th>16:00</th> -->
+<!-- 					<th>16:30</th> -->
+<!-- 					<th>17:00</th> -->
+<!-- 					<th>Durum</th> -->
+<!-- 				</tr> -->
+<!-- 			</thead> -->
+<!-- 			<tbody> -->
+<!-- 				<tr> -->
+<!-- 					<td><b>TFS</b></td> -->
+<!-- 					<td style="background-color: red">Who</td> -->
+<!-- 				</tr> -->
+<!-- 			</tbody> -->
+<!-- 		</table> -->
+
+<!-- 		<div class="card"> -->
+<!-- 			<div class="card-body">Aylık Özet</div> -->
+<!-- 		</div> -->
+<!-- 		<div class="card"> -->
+<!-- 			<div class="card-body"> -->
+<!-- 				<table class="table"> -->
+<!-- 					<thead class="thead-dark"> -->
+<!-- 						<tr> -->
+<!-- 							<th></th> -->
+<!-- 							<th>Günlük Blok Süresi</th> -->
+<!-- 							<th>Haftalık Blok Süresi</th> -->
+<!-- 							<th>Toplam Blok Süresi</th> -->
+<!-- 							<th>Toplam Blok Adeti</th> -->
+<!-- 							<th>Toplam Gün Sayısı</th> -->
+<!-- 						</tr> -->
+<!-- 					</thead> -->
+<!-- 					<tbody> -->
+<!-- 						<tr> -->
+<!-- 							<td>Mayıs</td> -->
+<!-- 							<td>165 Dakika</td> -->
+<!-- 							<td>311 Dakika</td> -->
+<!-- 							<td>311 dakika |≈ 5 Saat</td> -->
+<!-- 							<td><center>4</center></td> -->
+<!-- 							<td><center>3</center></td> -->
+<!-- 						</tr> -->
+<!-- 					</tbody> -->
+<!-- 				</table> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+
+<!-- 		<br> -->
+<!-- 		<br> -->
+<!-- 		<br> -->
+<!-- 		<div class="card"> -->
+<!-- 			<div class="card-body">Toplam Özet</div> -->
+<!-- 		</div> -->
+<!-- 		<div class="card"> -->
+<!-- 			<div class="card-body"> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-lg-2">Çalışma Gün Sayısı</div> -->
+<!-- 					<div class="col-lg-4">59 Gün (12 Şubat 2018 - 04 Mayıs 2018)</div> -->
+<!-- 				</div> -->
+<!-- 				<hr> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-lg-2">Çalışma Süresi</div> -->
+<!-- 					<div class="col-lg-4">520 Saat</div> -->
+<!-- 				</div> -->
+<!-- 				<hr> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-lg-2">Toplam Blok Süresi</div> -->
+<!-- 					<div class="col-lg-4">17625 Dakika |≈ 292 Saat</div> -->
+<!-- 				</div> -->
+<!-- 				<hr> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-lg-2">Toplam Blok Adedi</div> -->
+<!-- 					<div class="col-lg-4">78 Adet</div> -->
+<!-- 				</div> -->
+<!-- 				<hr> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-lg-2">Blok Yaşanan Gün Sayısı</div> -->
+<!-- 					<div class="col-lg-4">43 Gün</div> -->
+<!-- 				</div> -->
+<!-- 				<hr> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-lg-2">Blok Yaşanmayan Gün Sayısı</div> -->
+<!-- 					<div class="col-lg-4">13 Gün</div> -->
+<!-- 				</div> -->
+<!-- 				<hr> -->
+<!-- 				<div class="row"> -->
+<!-- 					<div class="col-lg-2">Sonuç</div> -->
+<!-- 					<div class="col-lg-4">520 Saat Çalışma Süresinde, 22 Farklı -->
+<!-- 						78 Adet – 292 Saat Blok</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 		<br> -->
+<!-- 		<br> -->
+<!-- 		<br> -->
+<!-- 		<div class="card"> -->
+<!-- 			<div class="card-body">XLB-Bugün</div> -->
+<!-- 		</div> -->
+<!-- 		<div class="card"> -->
+<!-- 			<div class="card-body"> -->
+<!-- 				<table class="table"> -->
+<!-- 					<thead class="thead-dark"> -->
+<!-- 						<tr> -->
+<!-- 							<th>Tarih</th> -->
+<!-- 							<th>Sistem</th> -->
+<!-- 							<th>Ortam</th> -->
+<!-- 							<th>Başlangıç Saati</th> -->
+<!-- 							<th>Bitiş Saati</th> -->
+<!-- 							<th>Süre</th> -->
+<!-- 							<th>Türü *</th> -->
+<!-- 							<th>Etkilenen</th> -->
+<!-- 							<th>Blok Durum</th> -->
+<!-- 						</tr> -->
+<!-- 					</thead> -->
+<!-- 					<tbody> -->
+<!-- 						<tr> -->
+<!-- 							<td>$tsrih</td> -->
+<!-- 							<td>$sistem</td> -->
+<!-- 							<td>$ortam</td> -->
+<!-- 							<td>$baslangic_ssat</td> -->
+<!-- 							<td>$bitis_ssat</td> -->
+<!-- 							<td>$süre</td> -->
+<!-- 							<td>$turu</td> -->
+<!-- 							<td>$etkilenen</td> -->
+<!-- 							<td>$blok_durum</td> -->
+<!-- 						</tr> -->
+<!-- 					</tbody> -->
+<!-- 				</table> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 		<br> -->
+<!-- 		<br> -->
+<!-- 		<br> -->
+<!-- 		<div class="card"> -->
+<!-- 			<div class="card-body">XLB-Dün</div> -->
+<!-- 		</div> -->
+<!-- 		<div class="card"> -->
+<!-- 			<div class="card-body"> -->
+<!-- 				<table class="table"> -->
+<!-- 					<thead class="thead-dark"> -->
+<!-- 						<tr> -->
+<!-- 							<th>Tarih</th> -->
+<!-- 							<th>Sistem</th> -->
+<!-- 							<th>Ortam</th> -->
+<!-- 							<th>Başlangıç Saati</th> -->
+<!-- 							<th>Bitiş Saati</th> -->
+<!-- 							<th>Süre</th> -->
+<!-- 							<th>Türü *</th> -->
+<!-- 							<th>Etkilenen</th> -->
+<!-- 							<th>Blok Durum</th> -->
+<!-- 						</tr> -->
+<!-- 					</thead> -->
+<!-- 					<tbody> -->
+<!-- 						<tr> -->
+<!-- 							<td>$tsrih</td> -->
+<!-- 							<td>$sistem</td> -->
+<!-- 							<td>$ortam</td> -->
+<!-- 							<td>$baslangic_ssat</td> -->
+<!-- 							<td>$bitis_ssat</td> -->
+<!-- 							<td>$süre</td> -->
+<!-- 							<td>$turu</td> -->
+<!-- 							<td>$etkilenen</td> -->
+<!-- 							<td>$blok_durum</td> -->
+<!-- 						</tr> -->
+<!-- 					</tbody> -->
+<!-- 				</table> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+
+<!-- 		<br> -->
+<!-- 		<br> -->
+<!-- 		<br> -->
+<!-- 		<div class="card"> -->
+<!-- 			<div class="card-body">XLB-Bu Hafta</div> -->
+<!-- 		</div> -->
+
+<!-- 	</div> -->
+
+
+
+<!-- 	<div class="container-fluid"> -->
+
+
+<!-- 		<div class="row"> -->
+<!-- 			<div class="col-lg-1"> -->
+<!-- 				<div class="card"> -->
+<!-- 					<div class="card-body"> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-1"></div> -->
+<!-- 							<div class="col-lg-2" -->
+<!-- 								style="border-color: red; font-size: 14px; border-bottom: 3px"> -->
+<!-- 								<b>Pazartesi</b> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<hr> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Mayanext</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">TFS</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<hr> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Mayanext</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">TFS</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+
+<!-- 			<div class="col-lg-1"> -->
+<!-- 				<div class="card"> -->
+<!-- 					<div class="card-body"> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-1"></div> -->
+<!-- 							<div class="col-lg-2" -->
+<!-- 								style="border-color: red; font-size: 14px; border-bottom: 3px"> -->
+<!-- 								<b>Salı</b> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<hr> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Mayanext</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">TFS</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<hr> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Mayanext</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">TFS</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+
+<!-- 			<div class="col-lg-1"> -->
+<!-- 				<div class="card"> -->
+<!-- 					<div class="card-body"> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-1"></div> -->
+<!-- 							<div class="col-lg-2" -->
+<!-- 								style="border-color: red; font-size: 14px; border-bottom: 3px"> -->
+<!-- 								<b>Pazartesi</b> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<hr> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Mayanext</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">TFS</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<hr> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Mayanext</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">TFS</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+
+<!-- 		</div> -->
+
+
+
+<!-- 	</div> -->
+<!-- 	<br> -->
+
+<!-- 	<div class="container-fluid"> -->
+<!-- 		<div class="row"> -->
+
+<!-- 			<div class="col-lg-1"> -->
+<!-- 				<div class="card"> -->
+<!-- 					<div class="card-body"> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-1"></div> -->
+<!-- 							<div class="col-lg-2" -->
+<!-- 								style="border-color: red; font-size: 14px; border-bottom: 3px"> -->
+<!-- 								<b>Perşembe</b> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<hr> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Mayanext</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">TFS</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<hr> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Mayanext</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">TFS</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+
+<!-- 			<div class="col-lg-1"> -->
+<!-- 				<div class="card"> -->
+<!-- 					<div class="card-body"> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-1"></div> -->
+<!-- 							<div class="col-lg-2" -->
+<!-- 								style="border-color: red; font-size: 14px; border-bottom: 3px"> -->
+<!-- 								<b>Cuma</b> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<hr> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Mayanext</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">TFS</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 						<hr> -->
+<!-- 						<div class="row"> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Mayanext</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 							<div class="col-lg-5"> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">TFS</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Tarih</div> -->
+<!-- 									<div class="col-lg-3">$tarih</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Ortam</div> -->
+<!-- 									<div class="col-lg-3">$ortam</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Sistem</div> -->
+<!-- 									<div class="col-lg-3">$sistem</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Baş. Saati</div> -->
+<!-- 									<div class="col-lg-3">$basSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Bitis Saati</div> -->
+<!-- 									<div class="col-lg-3">$bitSaat</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Türü</div> -->
+<!-- 									<div class="col-lg-3">$turu</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Etkilenen</div> -->
+<!-- 									<div class="col-lg-3">$etkilenen</div> -->
+<!-- 								</div> -->
+<!-- 								<div class="row"> -->
+<!-- 									<div class="col-lg-3">Durum</div> -->
+<!-- 									<div class="col-lg-3">$durum</div> -->
+<!-- 								</div> -->
+<!-- 							</div> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+
+<!-- 			<div class="col-lg-1"></div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
+
+<!-- </body> -->
+<!-- </html> -->
