@@ -17,6 +17,7 @@ public class LastBlockSettingThread implements Runnable {
 	private long lastCreatedDate;
 	private DeferredResult<BlockInfoAsTimeOutput> result;
 	private boolean waitControl;
+	private String segment;
 	private SseEmitter emitter;
 	
 	
@@ -33,7 +34,7 @@ public class LastBlockSettingThread implements Runnable {
 				}
 				
 				if(!result.isSetOrExpired()) {
-					output.setBlockDetail(lastBlockThreadService.fetchLastAddedBlocks(lastCreatedDate));
+					output.setBlockDetail(lastBlockThreadService.fetchLastAddedBlocks(lastCreatedDate, segment));
 					result.setResult(output);
 				}
 				emitter.complete();
@@ -83,6 +84,14 @@ public class LastBlockSettingThread implements Runnable {
 
 	public void setLastBlockThreadService(LastBlockThreadService lastBlockThreadService) {
 		this.lastBlockThreadService = lastBlockThreadService;
+	}
+
+	public String getSegment() {
+		return segment;
+	}
+
+	public void setSegment(String segment) {
+		this.segment = segment;
 	}
 	
 	

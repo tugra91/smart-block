@@ -3,6 +3,7 @@ package com.turkcell.blockmail.common.dao.impl;
 import java.util.Calendar;
 import java.util.List;
 
+import com.turkcell.blockmail.document.BlockSystemParameterDocument;
 import org.bson.Document;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
+import org.springframework.data.mongodb.core.query.Collation;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Repository;
 
 import com.turkcell.blockmail.common.dao.BlockCommonDao;
@@ -66,7 +69,10 @@ public class BlockCommonDaoImpl implements BlockCommonDao {
 		calendar.set(Calendar.MONTH, Calendar.JANUARY);
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		
-		TypedAggregation<BlockInfoDocumentInput> aggregation = DaoUtil.getAggretionQuery(calendar.getTimeInMillis(),CalendarUtil.endTimeMilisInWorkTime(System.currentTimeMillis()) , 0, 0, matchOperation, null,null);
+		TypedAggregation<BlockInfoDocumentInput> aggregation = 
+				DaoUtil.getAggretionQuery(calendar.getTimeInMillis(),
+						CalendarUtil.endTimeMilisInWorkTime(System.currentTimeMillis()) , 0, 0, 
+						matchOperation, null,null, null);
 		
 		AggregationResults<Document> resultList = mongoTemplate.aggregate(aggregation, Document.class);
 		
@@ -75,6 +81,24 @@ public class BlockCommonDaoImpl implements BlockCommonDao {
 		double blockHours = !result.isEmpty() ? result.get(0).getDouble("blockHours") : 0;
 		
 		return blockHours;
+	}
+
+	@Override
+	public void saveBlockSystemParameter(BlockSystemParameterDocument input) {
+		try {
+			mongoTemplate.insert(input);
+		}catch (Exception e) {
+			throw e;
+		}
+	}
+
+	@Override
+	public BlockSystemParameterDocument getBlockSystemParameter(String name) {
+		Collation collation = Collation.of("tr")
+				.strength(Collation.ComparisonLevel.primary().excludeCase())
+				.alternate(Collation.Alternate.shifted())
+				.normalizationEnabled();
+		return mongoTemplate.findOne(new Query(Criteria.where("name").is(name)).collation(collation), BlockSystemParameterDocument.class);
 	}
 
 }

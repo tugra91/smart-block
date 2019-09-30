@@ -32,4 +32,28 @@ public class CalendarUtil {
 		return endTimeCalendar.getTimeInMillis();
 	}
 
+	public static boolean isWorkTime() {
+		Calendar nowCal = Calendar.getInstance();
+		nowCal.setTimeInMillis(System.currentTimeMillis());
+
+		int weekDay = nowCal.get(Calendar.DAY_OF_WEEK);
+
+		if(weekDay>= Calendar.MONDAY && weekDay <= Calendar.FRIDAY) {
+			int hour = nowCal.get(Calendar.HOUR_OF_DAY);
+			int minute = nowCal.get(Calendar.MINUTE);
+
+			if((hour >= 0 && hour < 7)
+					|| (hour == 7 && minute < 30) ) {
+				return false;
+			} else if((hour > 16 && hour <= 23)
+					|| (hour == 16 && minute >= 30)) {
+				return false;
+			}
+		} else {
+			return false;
+		}
+
+		return true;
+	}
+
 }

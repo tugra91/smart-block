@@ -33,7 +33,7 @@ public class BlockMainPageDaoImpl implements BlockMainPageDao {
 	private MongoTemplate mongoTemplate;
 
 	@Override
-	public List<Document> getLastBlocks(long skip, int limit) throws NullPointerException {
+	public List<Document> getLastBlocks(long skip, int limit, String segment) throws NullPointerException {
 		
 		List<Document> result = new ArrayList<>();
 		
@@ -58,7 +58,7 @@ public class BlockMainPageDaoImpl implements BlockMainPageDao {
 				.push(ROOT).as("block");
 		SortOperation sortOperation = new SortOperation(Sort.by(Direction.DESC, Aggregation.previousOperation(), "createDate" ));
 		
-		TypedAggregation<BlockInfoDocumentInput> aggregation = DaoUtil.getAggretionQuery(pastTimeMilis, endTimeMilis, skip, limit, matchOperation, sortOperation, groupOperation);
+		TypedAggregation<BlockInfoDocumentInput> aggregation = DaoUtil.getAggretionQuery(pastTimeMilis, endTimeMilis, skip, limit, matchOperation, sortOperation, groupOperation, segment);
 		
 		
 		AggregationResults<Document> resultList = mongoTemplate.aggregate(aggregation, Document.class);

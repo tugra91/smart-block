@@ -2,6 +2,7 @@ package com.turkcell.blockmail.common.dao;
 
 import java.util.List;
 
+import com.turkcell.blockmail.document.BlockSystemParameterDocument;
 import org.bson.types.ObjectId;
 
 import com.turkcell.blockmail.document.BlockSystemListDocument;
@@ -19,6 +20,10 @@ public interface BlockCommonDao {
 	public void saveBlockType(BlockTypeListDocument input);
 	
 	public double getBlockHours(ObjectId id);
+
+	void saveBlockSystemParameter(BlockSystemParameterDocument input);
+
+	BlockSystemParameterDocument getBlockSystemParameter(String name);
 	
 
 }

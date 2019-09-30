@@ -23,6 +23,8 @@ public interface BlockSaveService {
 	
 	public BlockTempUpdateOutput updateBlockMailTemp(ObjectId id, long endDate, String endBlockUser);
 	
-	public List<BlockInfoDocumentInput> getActiveBlockList();
+	public List<BlockInfoDocumentInput> getActiveBlockList(String segment);
+
+	List<BlockInfoDocumentInput> getBlockByServiceId(ObjectId serviceId);
 	
 }

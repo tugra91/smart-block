@@ -35,6 +35,8 @@ public class BlockInfoDocumentInput implements Serializable {
 	private long totalBlockTime;
 	private int statusCode;
 	private ObjectId userId;
+	private ObjectId serviceId;
+	private String segment;
 	private boolean status;
 	
 	
@@ -116,6 +118,13 @@ public class BlockInfoDocumentInput implements Serializable {
 	public void setCreateDate(long createDate) {
 		this.createDate = createDate;
 	}
+	public String getSegment() {
+		return segment;
+	}
+
+	public void setSegment(String segment) {
+		this.segment = segment;
+	}
 	public List<BlockUpdateInformationModel> getUpdateInfoList() {
 		return updateInfoList;
 	}
@@ -140,41 +149,45 @@ public class BlockInfoDocumentInput implements Serializable {
 	public void setUserId(ObjectId userId) {
 		this.userId = userId;
 	}
+
+	public ObjectId getServiceId() {
+		return serviceId;
+	}
+
+	public void setServiceId(ObjectId serviceId) {
+		this.serviceId = serviceId;
+	}
+
 	public boolean isStatus() {
 		return status;
 	}
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
-	
-	
+
+
 	@Override
 	public String toString() {
-		return "BlockInfoDocumentInput [id=" + id + ", blockName=" + blockName + ", blockDesc=" + blockDesc
-				+ ", blockSystem=" + blockSystem + ", affectSystem=" + affectSystem + ", affectEnvironment="
-				+ affectEnvironment + ", startDate=" + startDate + ", endDate=" + endDate + ", blockType=" + blockType
-				+ ", informTeam=" + informTeam + ", openBlockUser=" + openBlockUser + ", endBlockUser=" + endBlockUser
-				+ ", createDate=" + createDate + ", updateInfoList=" + updateInfoList + ", totalBlockTime="
-				+ totalBlockTime + ", statusCode=" + statusCode + ", userId=" + userId + ", status=" + status + "]";
+		return "BlockInfoDocumentInput{" +
+				"id=" + id +
+				", blockName='" + blockName + '\'' +
+				", blockDesc='" + blockDesc + '\'' +
+				", blockSystem='" + blockSystem + '\'' +
+				", affectSystem='" + affectSystem + '\'' +
+				", affectEnvironment='" + affectEnvironment + '\'' +
+				", startDate=" + startDate +
+				", endDate=" + endDate +
+				", blockType='" + blockType + '\'' +
+				", informTeam='" + informTeam + '\'' +
+				", openBlockUser='" + openBlockUser + '\'' +
+				", endBlockUser='" + endBlockUser + '\'' +
+				", createDate=" + createDate +
+				", updateInfoList=" + updateInfoList +
+				", totalBlockTime=" + totalBlockTime +
+				", statusCode=" + statusCode +
+				", userId=" + userId +
+				", serviceId=" + serviceId +
+				", status=" + status +
+				'}';
 	}
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

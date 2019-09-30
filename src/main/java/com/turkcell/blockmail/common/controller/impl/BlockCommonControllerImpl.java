@@ -1,5 +1,7 @@
 package com.turkcell.blockmail.common.controller.impl;
 
+import com.turkcell.blockmail.model.*;
+import com.turkcell.blockmail.threadService.model.GenericResultOutput;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,11 +11,6 @@ import com.turkcell.blockmail.common.controller.BlockCommonController;
 import com.turkcell.blockmail.common.service.BlockCommonService;
 import com.turkcell.blockmail.document.BlockSystemListDocument;
 import com.turkcell.blockmail.document.BlockTypeListDocument;
-import com.turkcell.blockmail.model.BlockHoursOutput;
-import com.turkcell.blockmail.model.BlockInfoOutput;
-import com.turkcell.blockmail.model.BlockOnlyIdInput;
-import com.turkcell.blockmail.model.BlockSystemListOutput;
-import com.turkcell.blockmail.model.BlockTypeListOutput;
 import com.turkcell.blockmail.util.mail.service.BlockSendMailService;
 
 @RestController
@@ -61,6 +58,12 @@ public class BlockCommonControllerImpl implements BlockCommonController {
 	@RequestMapping(value = "/sendEndDayReport")
 	public void trySendEndDayReportMail() {
 		blockSendMailService.sendEndDayReportMail();
+	}
+
+	@Override
+	@RequestMapping(value = "/saveBlockSystemParameter")
+	public GenericResultOutput saveBlockSystemParameter(@RequestBody  BlockSystemParameterInput input) {
+		return blockCommonService.saveBlockSystemParameter(input.getName(), input.getValue());
 	}
 
 }

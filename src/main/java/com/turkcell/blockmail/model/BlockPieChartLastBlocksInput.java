@@ -11,6 +11,7 @@ public class BlockPieChartLastBlocksInput implements Serializable{
 	
 	private long skip;
 	private int limit;
+	private String segment;
 	private String env;
 	private boolean isActive;
 	
@@ -25,6 +26,14 @@ public class BlockPieChartLastBlocksInput implements Serializable{
 
 	public int getLimit() {
 		return limit;
+	}
+	
+	public String getSegment() {
+		return segment;
+	}
+
+	public void setSegment(String segment) {
+		this.segment = segment;
 	}
 
 	public void setLimit(int limit) {

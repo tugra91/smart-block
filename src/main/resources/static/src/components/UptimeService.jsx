@@ -1,89 +1,90 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
-import {Panel,Alert, Grid, Row, Col,ProgressBar} from 'react-bootstrap';
-
+import {Panel,Alert, Grid, Row, Col,ProgressBar, Table} from 'react-bootstrap';
+import heartbeats from 'heartbeats';
+import {withRouter} from "react-router";
+import {BrowserRouter as Router, Route, Link} from "react-router-dom";
 
 
 
 
 const globalValue = {
-		pollingXhr:null,
-		sseXhr:null
+		res : []
 }
+
 
 class UptimeService extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = this.getInitialState();
-		this.sendLongPollingRequest = this.sendLongPollingRequest.bind(this);
-		this.prepareProgressBar = this.prepareProgressBar.bind(this);
+		this.state = {
+			res:[],
+			isOpenComponent:false,
+			serviceModel:{}
+		}
+		this.decideStyle = this.decideStyle.bind(this);
+		this.getServices = this.getServices.bind(this);
+		this.runHearthBeat = this.runHearthBeat.bind(this);
+		this.redirectAdminService  = this.redirectAdminService.bind(this);
+		this.cleanStates = this.cleanStates.bind(this);
 	}
 
 
 	getInitialState(){
 		const state = {
-					blockService : {},
-					responseTime : 0,
-					uptimePercent : 0,
-					bsStyle : ""
+					res:[],
+					isOpenComponent:false
 		};
 		return state;
 	}
 
-	componentDidMount() {
-		$.ajax({
-			type:'GET',
-			url:'/getBlockService',
-			dataType:'json',
-			cache:false,
-			success: function(res){
-				this.prepareProgressBar(res);
-				this.sendLongPollingRequest(res.serviceName, res.lastUpdate);
-				console.log(res);
-			}.bind(this),
-			error: function(xhr, status, err){
-				console.error(status,err.toString());
-			}.bind(this)
-		});
+	componentWillMount() {
+		if(!this.props.isLogin) {
+			this.props.history.push("/");
+		}
 
+		this.getServices(false);
 	}
 
 	componentWillUnmount() {
-		globalValue.pollingXhr.abort();
-		globalValue.sseXhr.abort();
-		this.setState(this.getInitialState());
+		this.cleanStates();
+		heartbeats.killHeart('GetServices');
+	}
+
+	cleanStates(){
+		this.setState({
+			res:[],
+			isOpenComponent:false,
+			serviceModel:{}
+		});
 	}
 
 
-	sendLongPollingRequest(serviceName, lastUpdateDate) {
+	runHearthBeat() {
+		var self = this;
+		var heart = heartbeats.createHeart(10000, 'GetServices');
+		heart.createEvent(1, function(count, last){
+			self.getServices(true);
+		});
+	}
 
-		globalValue.sseXhr = $.ajax({
-			type:'GET',
-			url:'/getSseUptime',
+	getServices(isHeartBeat){
+		var accessToken = localStorage.getItem('accessToken');
+		$.ajax({
+			url:'/oThreadService/getServices',
 			dataType:'json',
 			cache:false,
+			headers:{Authorization:"Bearer "+accessToken},
 			success: function(res){
 				console.log(res);
-			}.bind(this),
-			error: function(xhr, status, err){
-				console.error(status,err.toString());
-			}.bind(this)
-		});
-
-		globalValue.pollingXhr = $.ajax({
-			type: 'GET',
-			url:'/getUptimePoll?serviceName='+serviceName+'&lastUpdateTime='+lastUpdateDate,
-			dataType:'json',
-			cache:false,
-			success: function(res){
-				this.prepareProgressBar(res);
-				this.sendLongPollingRequest(res.serviceName, res.lastUpdate);
-			}.bind(this),
-			error: function(xhr, status, err){
 				this.setState({
-					longPollingItems:[]
-				})
+					res:res
+				});
+				if(!isHeartBeat) {
+					this.runHearthBeat();
+				}
+			}.bind(this),
+			error: function(xhr, status, err){
 				console.error(status,err.toString());
 			}.bind(this)
 		});
@@ -109,24 +110,82 @@ class UptimeService extends React.Component {
 		})
 	}
 
+
+	decideStyle(uptimePercent, status) {
+		
+		if(!status) {
+			return "danger";
+		}
+
+		var bsStyle = "";
+		if(uptimePercent <= 20) {
+			bsStyle="danger";
+		} else if(uptimePercent>20 && uptimePercent<=60){
+			bsStyle="warning";
+		} else if(uptimePercent>60 && uptimePercent<=100){
+			bsStyle="success";
+		}
+
+		return bsStyle;
+	}
+
+	redirectAdminService(serviceModel) {
+		this.props.redirectFunc(serviceModel);
+	}
+
+
+
 	render() {
+
+		var self = this;
+
+		var operationListDOM = this.state.res != null ? this.state.res.map(function(result, index) {
+			
+			var uptimePercent = Number.parseFloat(result.uptimePercent).toFixed(2)
+			var percentText = uptimePercent + "%";
+			var uptime = result.status ? result.uptime + ' ms' : 'Servis Cevap Vermiyor';
+			return(
+				
+				<tr>
+					<td style={{verticalAlign:'middle'}} width='3%'>{index + 1}</td>
+					<td style={{verticalAlign:'middle'}} width='35%'>{result.serviceName}</td>
+					<td style={{verticalAlign:'middle'}} width='50%'> <ProgressBar striped label={percentText} bsStyle={self.decideStyle(uptimePercent, result.status)} now={uptimePercent} /></td>
+					<td style={{verticalAlign:'middle'}} width='9%'>{uptime}   </td>
+					{self.props.isAdmin ?<td style={{verticalAlign:'middle'}} width='3%' align='center'><Link to="/serviceHealth"><img src='settings.png' onClick={() => self.redirectAdminService(result)} height='21' width='21'></img></Link></td> : null }
+				</tr>
+			)
+		}) : null;
+
 		return (
-				<Grid bsClass="container-fluid" >
-					<Row>
-						<Col xs={6} md={4}>
-							<h1>{this.state.blockService.serviceName} ---%{this.state.uptimePercent} </h1>
-						</Col>
-						<Col xs={6} md={4}>
-							<ProgressBar bsStyle={this.state.bsStyle} now={this.state.uptimePercent} />
-						</Col>
-						<Col xsHidden md={4}>
-							<h1>Response Süresi: {this.state.responseTime} sn dir.</h1>
-						</Col>
-					</Row>
-				</Grid>
+				<div>	
+				{operationListDOM != null ? 
+					(
+						<Table striped bordered condensed hover>
+							<thead>
+							<tr>
+								<th>#</th>
+								<th>Servis İsmi</th>
+								<th>UpTime</th>
+								<th>Res. Süresi</th>
+								{this.props.isAdmin ? <th>Düzelt</th> : null }
+							</tr>
+							</thead>
+							<tbody>
+							{operationListDOM}
+							</tbody>
+						 </Table>
+					)
+					:
+					(
+					'Kayıt Bulunamadı.'
+					)
+				}
+				</div>
 		)
+
+		
 
 	}
 }
 
-export default UptimeService;
+export default withRouter(UptimeService);

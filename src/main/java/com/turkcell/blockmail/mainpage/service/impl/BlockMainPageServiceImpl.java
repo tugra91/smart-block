@@ -51,8 +51,8 @@ public class BlockMainPageServiceImpl implements BlockMainPageService {
 	
 	
 	@Override
-	public List<Document> getLastBlocks(long skip, int limit) {
-		List<Document> result = blockMainPageDao.getLastBlocks(skip, limit);
+	public List<Document> getLastBlocks(long skip, int limit, String segment) {
+		List<Document> result = blockMainPageDao.getLastBlocks(skip, limit, segment);
 		
 		
 		
@@ -82,7 +82,7 @@ public class BlockMainPageServiceImpl implements BlockMainPageService {
 	}
 
 	@Override
-	public DeferredResult<BlockInfoAsTimeOutput> getLongPoll(long lastCreatedDate, String clientId) {
+	public DeferredResult<BlockInfoAsTimeOutput> getLongPoll(long lastCreatedDate, String clientId, String segment) {
 		final DeferredResult<BlockInfoAsTimeOutput> result = new DeferredResult<>(Long.MAX_VALUE);
 		
 		
@@ -151,7 +151,7 @@ public class BlockMainPageServiceImpl implements BlockMainPageService {
 	}
 
 	@Override
-	public BlockPieChartOutput getBlockPiechartInfoForLastBlocks(long skip, int limit, String env, boolean isActive) {
+	public BlockPieChartOutput getBlockPiechartInfoForLastBlocks(long skip, int limit, String env, boolean isActive, String segment) {
 		
 
 		BlockPieChartOutput output = new BlockPieChartOutput();
@@ -171,7 +171,7 @@ public class BlockMainPageServiceImpl implements BlockMainPageService {
 		
 		Gson gson = new Gson();
 		
-		List<Document> lastBlocks = getLastBlocks(skip, limit);
+		List<Document> lastBlocks = getLastBlocks(skip, limit, segment);
 		
 		
 		for(BlockSystemListDocument rs: systemList) {

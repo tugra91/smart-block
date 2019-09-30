@@ -7,6 +7,6 @@ import org.bson.Document;
 public interface BlockMainPageDao {
 	
 	
-	public List<Document> getLastBlocks(long skip, int limit) throws NullPointerException;
+	public List<Document> getLastBlocks(long skip, int limit, String segment) throws NullPointerException;
 	
 }

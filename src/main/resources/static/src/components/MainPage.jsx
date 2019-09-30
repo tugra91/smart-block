@@ -13,6 +13,7 @@ import LoadingComponent from './LoadingComponent.jsx';
 import BlockModal from './BlockModal.jsx';
 import UserModal from './UserModal.jsx';
 import InfoModal from './InfoModal.jsx';
+import AdminServiceRegister from './AdminServiceRegisterComponent.jsx';
 import $ from 'jquery';
 import moment from 'moment';
 
@@ -28,7 +29,9 @@ class MainPage extends React.Component {
 				infoModal:false,
 				infoModalMessage:"",
 				applyUserLoading:false,
-				isRegister:false
+				isRegister:false,
+				upTimeServiceModel : {},
+				isUptime:false
 		}
 
 		this.selectNav = this.selectNav.bind(this);
@@ -41,6 +44,8 @@ class MainPage extends React.Component {
 		this.getUserInformation = this.getUserInformation.bind(this);
 		this.registerFunc = this.registerFunc.bind(this);
 		this.infoModalStatus = this.infoModalStatus.bind(this);
+		this.linkFromUptimeToAdmin = this.linkFromUptimeToAdmin.bind(this);
+		this.cleanPropsAdminService = this.cleanPropsAdminService.bind(this);
 	}
 
 
@@ -172,6 +177,21 @@ class MainPage extends React.Component {
 		}
 	}
 
+	linkFromUptimeToAdmin(serviceModel) {
+
+		this.setState({
+			isUptime:true,
+			upTimeServiceModel:serviceModel
+		})
+	}
+
+	cleanPropsAdminService(){
+		this.setState({
+			isUptime:false,
+			upTimeServiceModel:{}
+		})
+	}
+
 	adminDeleteOrApplyUser(isDelete, userInformation) {
 
 		if(this.state.isLogin
@@ -241,15 +261,17 @@ class MainPage extends React.Component {
 		var editUserInformationLabel = this.state.activeKey == 7.2 ? (<font color="white">Bilgilerimi Düzenle</font>):(<font color="#FEC640">Bilgilerimi Düzenle</font>);
 		var adminApplyUser = this.state.activeKey == 7.3 ? (<font color="white">Kullanıcı Onayla</font>):(<font color="#FEC640">Kullanıcı Onayla</font>);
 		var logoutLabel = this.state.activeKey == 7.9 ? (<font color="white">Çıkış Yap</font>):(<font color="#FEC640">Çıkış Yap</font>);
+		var serviceHealthLabel = this.state.activeKey == 7.4 ? (<font color="white">Servis Ekle</font>):(<font color="#FEC640">Servis Ekle</font>);
+		var uptimeLabel = this.state.activeKey == 9 ? (<font color="white">Servis Listesi</font>):(<font color="#FEC640">Servis Listesi</font>);
 
 		const waitUsersTable = this.state.waitUserList.map((result,index) => (
 				<tr>
-					<td>#{index+1}</td>
+				<td>#{index+1}</td>
 		      <td>{result.username}</td>
 		      <td>{result.email}</td>
 		      <td>{result.name}</td>
 		      <td>{result.surname}</td>
-		      <td>{result.createdDate != 0 ? moment(result.createdDate).format("DD MMM YYYY HH:mm") : ('')}</td>
+		      <td>{result.createdDate != 0 ? moment(result.createdDate).format("DD MMM YYYY HH:mm") : null}</td>
 		      <td><Button bsStyle="danger" onClick={() => this.adminDeleteOrApplyUser(true, result)}>Sil</Button></td>
 		      <td><Button bsStyle="success" onClick={() => this.adminDeleteOrApplyUser(false, result)}>Onayla</Button></td>
     		</tr>
@@ -267,7 +289,7 @@ class MainPage extends React.Component {
 							{this.state.isLogin ?
 								<NavItem eventKey={1} >
 									<Link to="/blockSave">  {blockEntryLabel} </Link>
-								</NavItem> : ('')
+								</NavItem> : null
 							}
 							<NavItem eventKey={2} >
 								<Link to="/searchBlock">{blockSearchLabel} </Link>
@@ -281,11 +303,16 @@ class MainPage extends React.Component {
 							<NavItem eventKey={5}>
 								<Link to="/monthBlock">{monthBlockLabel} </Link>
 							</NavItem>
+							{this.state.isLogin ?
+								<NavItem eventKey={9}>
+									<Link to="/uptimeService">{uptimeLabel} </Link>
+								</NavItem> : null
+							}
 							{!this.state.isLogin ?
 								<NavItem eventKey={6}>
 									<Link to="/login">{loginPageLabel} </Link>
 								</NavItem>
-								: ('')
+								: null
 							}
 							<NavItem>
 							</NavItem>
@@ -296,10 +323,11 @@ class MainPage extends React.Component {
 								<MenuItem eventKey={7.1}><Link to="/myBlocks">{myBlocksLabel} </Link></MenuItem>
 								<MenuItem eventKey={7.2}><p onClick={() => {this.setState({isRegister:true})}}>{editUserInformationLabel}</p> </MenuItem>
 								<MenuItem divider />
-								{this.isAdminUser() ? <MenuItem eventKey={7.3}><p onClick={() => this.waitUsersModal(true)} >{adminApplyUser} </p></MenuItem> : ('')}
+								{this.isAdminUser() ? <MenuItem eventKey={7.3}><p onClick={() => this.waitUsersModal(true)} >{adminApplyUser} </p></MenuItem> : null}
+								{this.isAdminUser() ? <MenuItem eventKey={7.4}><Link to="/serviceHealth">{serviceHealthLabel} </Link></MenuItem> : null}
 								<MenuItem eventKey={7.9}><p onClick={() => this.logout()} >{logoutLabel} </p></MenuItem>
 							</NavDropdown>
-							 : ('')
+							 : null
 							 }
 						</Nav>
 
@@ -309,11 +337,12 @@ class MainPage extends React.Component {
 						<Route path="/blockSave" render={(props) => <BlockForm isLogin={this.state.isLogin} userInfo={this.state.userInfo} />} />
 						<Route path="/searchBlock" render={(props) => <SearchBlock isLogin={this.state.isLogin} />} />
 						<Route path="/todayBlock/" render={(props,params) => <GenericDateRangeBlock isLogin={this.state.isLogin} dateRange= "Today" />}  />
-						<Route path="/weekBlock/" render={(props) => <GenericDateRangeBlock isLogin={this.state.isLogin} dateRange= "Week" />} />"
+						<Route path="/weekBlock/" render={(props) => <GenericDateRangeBlock isLogin={this.state.isLogin} dateRange= "Week" />} />
 						<Route path="/monthBlock/" render={(props) => <GenericDateRangeBlock isLogin={this.state.isLogin} dateRange= "Month" />} />
-						<Route path="/uptimeService" component={UptimeService} />
 						<Route path="/blockUpdate/:id" component={BlockUpdate} />
 						<Route path="/login" render={(props) => <LoginPage isLogin={this.state.isLogin} />} />
+						<Route path="/serviceHealth" render={(props) => <AdminServiceRegister isLogin={this.isAdminUser()} serviceModel={this.state.upTimeServiceModel} isUptime = {this.state.isUptime} cleanPropsAdminServiceFunc = {this.cleanPropsAdminService} /> }/>
+						<Route path="/uptimeService" render={(props) => <UptimeService isLogin={this.state.isLogin}  isAdmin={this.isAdminUser()} redirectFunc={this.linkFromUptimeToAdmin} /> }/>
 					</div>
 
 

@@ -93,15 +93,15 @@ public class BlockSaveDaoImpl implements BlockSaveDao {
 	}
 
 	@Override
-	public List<BlockInfoDocumentInput> getActiveBlockList() {
-		Query query = new Query().addCriteria(where("status").is(true));
+	public List<BlockInfoDocumentInput> getActiveBlockList(String segment) {
+		Query query = new Query().addCriteria(where("status").is(true).and("segment").is(segment));
 		return mongoTemplate.find(query, BlockInfoDocumentInput.class);
 	}
 
-
-
-
-
+	@Override
+	public List<BlockInfoDocumentInput> getFindByServiceId(ObjectId id) {
+		return mongoTemplate.find(new Query(where("serviceId").is(id).and("status").is(true)), BlockInfoDocumentInput.class);
+	}
 
 
 }

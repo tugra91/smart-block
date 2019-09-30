@@ -1,6 +1,22 @@
 spring:
   application:
     name: block-mail
+  mail:
+    host: smtp.turkcell.com.tr
+    port: 25
+    username: VFVSS0NFTExcVENNVUVS
+    password: WWVsY2lrISFkaXIwMzY=
+    protocol: smtp
+    properties:
+      mail:
+        debug: true
+        smtp:
+          ssl:
+            trust: smtp.turkcell.com.tr
+          auth: true
+          starttls:
+            enable: true
+
 logging:
  level:
   com:

@@ -27,9 +27,11 @@ public class BlockMainPageControllerImpl implements BlockMainPageController {
 
 	@Override
 	@RequestMapping(value = "/getLastBlocks")
-	public BlockInfoAsTimeOutput getLastBlocks(@RequestParam("skip") long skip, @RequestParam("limit") int limit) {
+	public BlockInfoAsTimeOutput getLastBlocks(@RequestParam("skip") long skip, 
+			@RequestParam("limit") int limit, 
+			@RequestParam("segment") String segment) {
 		BlockInfoAsTimeOutput output = new BlockInfoAsTimeOutput();
-		output.setBlockDetail(blockMainPageService.getLastBlocks(skip, limit));
+		output.setBlockDetail(blockMainPageService.getLastBlocks(skip, limit, segment));
 //		blockSendMail.sendEndDayReportMail();
 		return output;
 	}
@@ -42,14 +44,14 @@ public class BlockMainPageControllerImpl implements BlockMainPageController {
 
 	@Override
 	@RequestMapping(value = "/getLongPollingBlock/{lastCreatedDate}")
-	public DeferredResult<BlockInfoAsTimeOutput> getLongPoll(@PathVariable long lastCreatedDate, @RequestParam("clientId") String clientId) {
-		return blockMainPageService.getLongPoll(lastCreatedDate,clientId);
+	public DeferredResult<BlockInfoAsTimeOutput> getLongPoll(@PathVariable long lastCreatedDate, @RequestParam("clientId") String clientId, @RequestParam("segment") String segment) {
+		return blockMainPageService.getLongPoll(lastCreatedDate,clientId, segment);
 	}
 
 	@Override
 	@RequestMapping(value = "/getPieChartLastBlocks")
 	public BlockPieChartOutput getPiechartInfoLastBlocks(@RequestBody BlockPieChartLastBlocksInput input) {
-		return blockMainPageService.getBlockPiechartInfoForLastBlocks(input.getSkip(), input.getLimit(), input.getEnv(), input.isActive());
+		return blockMainPageService.getBlockPiechartInfoForLastBlocks(input.getSkip(), input.getLimit(), input.getEnv(), input.isActive(), input.getSegment());
 	}
 
 }

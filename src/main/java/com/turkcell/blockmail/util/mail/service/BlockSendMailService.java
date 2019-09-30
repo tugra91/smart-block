@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.turkcell.blockmail.document.BlockInfoDocumentInput;
 import com.turkcell.blockmail.model.UserInformationModel;
+import com.turkcell.blockmail.threadService.model.HealthCheckServiceModel;
+import com.turkcell.blockmail.util.mail.document.ReportMailModelDocument;
 
 public interface BlockSendMailService {
 	
@@ -11,11 +13,11 @@ public interface BlockSendMailService {
 	
 	public void sendExampleMail();
 	
-	public void senEndDayWarningMail(List<BlockInfoDocumentInput> blockList);
+	public void senEndDayWarningMail(List<BlockInfoDocumentInput> blockList, ReportMailModelDocument reportMail);
 	
-	public void sendEndDayNoBlockMail();
+	public void sendEndDayNoBlockMail(ReportMailModelDocument reportMail);
 	
-	public void sendEndDayExistBlockMail(int blockCount);
+	public void sendEndDayExistBlockMail(int blockCount, ReportMailModelDocument reportMail);
 	
 //	public void sendBlockSaveMail(BigInteger id, String blockName, String blockDesc);
 //	
@@ -30,5 +32,10 @@ public interface BlockSendMailService {
 	public void sendDeleteBlockMail(BlockInfoDocumentInput blockInfo, UserInformationModel blockOwnerInfo, UserInformationModel deleteUserInfo);
 	
 	public void sendAdminMailForInformation(UserInformationModel userInfo, List<UserInformationModel> adminList);
+
+	void sendServiceFaultMail(String role, HealthCheckServiceModel serviceModel, String faultMessage);
+
+	void sendServiceRerunnigMail(String role, HealthCheckServiceModel serviceModel );
+
 
 }

@@ -28,6 +28,7 @@ public class BlockMailResourceConfiguration implements WebMvcConfigurer {
 		registry.addViewController("/blockUpdate/{id}").setViewName("forward:/index.html");
 		registry.addViewController("/admin/addService").setViewName("forward:/index.html");
 		registry.addViewController("/login").setViewName("forward:/index.html");
+		registry.addViewController("/serviceHealth").setViewName("forward:/index.html");
 	}
 	
 

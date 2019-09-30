@@ -152,7 +152,7 @@ class BlockList extends React.Component {
 		if(!globalValue.callAjax) {
 			globalValue.loadDataXhr = $.ajax({
 				type:'GET',
-				url:'/getLastBlocks?'+urlSkip+'&'+urlLimit,
+				url:'/getLastBlocks?'+urlSkip+'&'+urlLimit+'&segment=',
 				dataType:'json',
 				cache:false,
 				success: function(res){
@@ -233,7 +233,7 @@ class BlockList extends React.Component {
 
 		globalValue.pollingXhr = $.ajax({
 			type: 'GET',
-			url:'/getLongPollingBlock/' + lastCreateDate+'?clientId='+globalValue.clientId,
+			url:'/getLongPollingBlock/' + lastCreateDate+'?clientId='+globalValue.clientId+'&segment=',
 			dataType:'json',
 			cache:false,
 			success: function(res){

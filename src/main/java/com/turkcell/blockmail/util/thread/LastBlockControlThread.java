@@ -24,6 +24,7 @@ public class LastBlockControlThread implements Runnable {
 	private long createDate;
 	private DeferredResult<BlockInfoAsTimeOutput> result;
 	private LastBlockSettingThread latestBlockSettingThread;
+	private String segment;
 	
 	private SseEmitter emitter;
 
@@ -38,7 +39,7 @@ public class LastBlockControlThread implements Runnable {
 				try {
 					try {
 						emitter.send("OK");
-						isNewBlock = lastBlockThreadService.isAddNewBlock(createDate);
+						isNewBlock = lastBlockThreadService.isAddNewBlock(createDate, segment);
 					} catch(IOException e) {
 						isNewBlock = true;
 						System.out.println("Expire oldu bebiş");
@@ -97,6 +98,14 @@ public class LastBlockControlThread implements Runnable {
 
 	public void setLastBlockThreadService(LastBlockThreadService lastBlockThreadService) {
 		this.lastBlockThreadService = lastBlockThreadService;
+	}
+
+	public String getSegment() {
+		return segment;
+	}
+
+	public void setSegment(String segment) {
+		this.segment = segment;
 	}
 
 }

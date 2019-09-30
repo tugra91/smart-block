@@ -1,131 +1,242 @@
 package com.turkcell.blockmail.threadService;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ThreadPoolExecutor;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.turkcell.blockmail.save.service.BlockSaveService;
+import com.turkcell.blockmail.threadService.dao.ServiceHealthCheckDao;
+import com.turkcell.blockmail.threadService.document.ServiceHealthCheckDocument;
+import com.turkcell.blockmail.util.ServiceUtil;
+import com.turkcell.blockmail.util.mail.service.BlockSendMailService;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
-import com.turkcell.blockmail.document.BlockServiceResponseInfoDocument;
 
 @Service
 public class AutoBlockControlThreadService implements Runnable {
 
-//	@Autowired
-//	private BlockSendMailService blockSendMail;
-//	
-//	@Autowired
-//	private BlockMailService blockMailService;
 
-	private String repairFaultMessage = "";
-	private int repairFaultStatus = 0;
-	private int countErrorNumber = 0;
-	boolean isRepairFault = false;
+
+	private ServiceHealthCheckDao serviceHealthCheckDao;
+	private BlockSendMailService blockSendMailService;
+	private BlockSaveService blockSaveService;
+	private ServiceHealthCheckDocument serviceDoc;
+	private ThreadPoolExecutor threadPoolExecutor;
+
+	private Object lock = new Object();
+	private boolean isWait = true;
+
 
 	@Override
 	public void run() {
 
-//		boolean isTimeRange = true;
-//		int statusCode = 0;
-//		double conResponseNanoMilis = 0;
-//		double conResponseSecond = 0;
-//		double constNanoMilis = 1000000000;
-//		long conStartTime = 0;
-//		long conEndTime = 0;
-//		
-//		BlockServiceResponseInfoDocument blockServiceResponse = new BlockServiceResponseInfoDocument();
-//
-//		while(isTimeRange) {
-//			try {
-//				conResponseSecond = 0;
-//				
-//				
-//				URL url = new URL("http://localhost:8081/healthCheck");
-//				HttpURLConnection con = (HttpURLConnection) url.openConnection();
-//				con.setRequestMethod("GET");
-//				con.setRequestProperty("Content-Type", "application-json");
-//				conStartTime = System.nanoTime();
-//				statusCode = con.getResponseCode();
-//				conEndTime = System.nanoTime();
-//				conResponseNanoMilis = conEndTime - conStartTime;
-//				conResponseSecond = conResponseNanoMilis / constNanoMilis;
-//				if(statusCode == 200) {
-//					Thread.sleep(3000);
-//					if(isRepairFault) {
-//						blockSendMail.sendRepairFaultBlockMail(repairFaultMessage, repairFaultStatus);
-//						isRepairFault = false;
-//						countErrorNumber = 0;
-//					}
-//				} else {
-//					isRepairFault = true;
-//					if(countErrorNumber == 0) {
-//						sendFaultMessage(con, statusCode, "");
-//					}
-//					Thread.sleep(5000);
-//					countErrorNumber++;
-//				}
-//				con.disconnect();
-//			} catch (MalformedURLException e) {
-//				throw new RuntimeException("URL String Hatası alındı.. HATA DETAYI ", e);
-//			} catch(IOException e) {
-//				isRepairFault = true;
-//				if(countErrorNumber == 0) {
-//					StringWriter sw = new StringWriter();
-//					e.printStackTrace(new PrintWriter(sw));
-//					sendFaultMessage(null, 0, sw.toString());
-//					System.out.println(sw.toString() + "  hatası aldı.");
-//				}
-//				countErrorNumber++;
-//				try {
-//					Thread.sleep(5000);
-//				} catch (InterruptedException e1) {
-//					throw new RuntimeException("Thread Sleep Fonksiyonu Hata Aldı.. HATA DETAYI " , e);
-//				}
-//			} catch (InterruptedException e) {
-//					throw new RuntimeException("Thread Sleep Fonksiyonu Hata Aldı.. HATA DETAYI " , e);
-//			} finally {
-//				blockServiceResponse.setResponseTime(conResponseSecond);
-//				blockServiceResponse.setServiceName("Health Check");
-//				blockServiceResponse.setStatus(!isRepairFault);
-//				blockServiceResponse.setTimeoutTime(45000);
-//				blockServiceResponse.setLastUpdate(System.currentTimeMillis());
-//				blockMailService.saveOrUpdateBlockServiceResponse(blockServiceResponse);
-//			}
-//		}
+			boolean isFault = false;
 
-	}
+			while(!isFault) {
+				System.out.println( "Control " + serviceDoc.getServiceName() + " Çalışıyor... ");
 
-	private void sendFaultMessage(HttpURLConnection con, int statusCode, String conError) {
-		String body = "";
-		
-		if(con != null) {
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(con.getErrorStream()));
-			String inputLine;
-			StringBuffer content = new StringBuffer();
+				HttpURLConnection connection = null;
 
-			try {
-				while ((inputLine = in.readLine()) != null) {
-					content.append(inputLine);
+				try {
+
+					setServiceDoc(serviceHealthCheckDao.getHealthCheckServiceDocument(serviceDoc.getId()));
+
+					connection = ServiceUtil.getConnection(ServiceUtil.convertServiceDocToModel(serviceDoc));
+
+					if(connection.getResponseCode() != HttpStatus.OK.value()) {
+						runnigStatusThread();
+						sendFaultMail(connection.getResponseMessage());
+						saveBlockRecord(connection.getResponseMessage());
+						isFault = true;
+						System.out.println(Thread.currentThread().getName() + " Servis Göçtü. Thread sona erdiriliyor. ");
+						continue;
+					}
+
+					StringBuilder response = new StringBuilder();
+
+					StopWatch stopWatch = new StopWatch();
+					stopWatch.start();
+
+					InputStream is = connection.getInputStream();
+					BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+
+
+					String line;
+					while ((line = rd.readLine()) != null) {
+						response.append(line);
+						response.append('\r');
+					}
+					rd.close();
+					is.close();
+					stopWatch.stop();
+
+					String clearResponse = response.toString()
+							.replace("<?xml version='1.0' encoding='UTF-8'?>", "")
+							.replaceAll("\\s+", "");
+
+					String clearModel = serviceDoc.getResponse()
+							.replace("<?xml version='1.0' encoding='UTF-8'?>", "")
+							.replaceAll("\\s+", "");
+
+
+
+
+					if(!StringUtils.equalsIgnoreCase(clearResponse, clearModel) && serviceDoc.isReqResCheck()) {
+						System.out.println("Statüs Thread Başlatılıyor... ");
+						runnigStatusThread();
+						String faultMessage = "Kayıtlı Response ile Servisten Dönen Response Eşleşmedi : " + response.toString()
+								.replaceAll("<", "&lt;")
+								.replaceAll(">", "&gt;");
+						sendFaultMail(faultMessage);
+						saveBlockRecord(faultMessage);
+						System.out.println(Thread.currentThread().getName() + " Servis Göçtü. Thread sona erdiriliyor. ");
+						isFault = true;
+						continue;
+					}
+					updateUptime(stopWatch.getTotalTimeMillis()  + 1);
+
+
+				} catch (IOException e) {
+					runnigStatusThread();
+					sendFaultMail(e.getMessage());
+					saveBlockRecord(e.getMessage());
+					isFault = true;
+					System.out.println(Thread.currentThread().getName() + " Servis Göçtü. Thread sona erdiriliyor. ");
+				} catch (Exception e) {
+					System.out.println(Thread.currentThread().getName() + " Sistemsel Hata yaşanıyor. Thread Durduruluyor.  " + e.getCause());
+					isFault = true;
+				} finally {
+					if(connection != null) {
+						connection.disconnect();
+					}
 				}
-				in.close();
-				body = content.toString();
-			} catch (IOException e) {
-				throw new RuntimeException("Error Response Okunurken Hata Alındı.. HATA DETAYI ", e);
-			}
-		} else {
-			body = conError;
+
+				try {
+					Thread.sleep(30000);
+				} catch (Exception e) {
+					System.out.println(Thread.currentThread().getName() + " Sistemsel Hata yaşanıyor. Thread uyku durumundayken hata aldı. Thread durduruluyor. ");
+					isFault = true;
+				}
+
 		}
-		repairFaultStatus = statusCode;
-		repairFaultMessage = body;
-//		blockSendMail.sendFaultBlockMail(body, statusCode);
+
 	}
 
 
+	private void runnigStatusThread() {
+		AutoBlockStatusThreadService autoBlockStatusThreadService = new AutoBlockStatusThreadService();
+		autoBlockStatusThreadService.setServiceDoc(serviceDoc);
+		autoBlockStatusThreadService.setServiceHealthCheckDao(serviceHealthCheckDao);
+		autoBlockStatusThreadService.setBlockSaveService(blockSaveService);
+		autoBlockStatusThreadService.setBlockSendMailService(blockSendMailService);
+		autoBlockStatusThreadService.setThreadPoolExecutor(threadPoolExecutor);
+		Thread statusThread = new Thread(autoBlockStatusThreadService);
+		statusThread.setName("STATUS - THREAD : " + serviceDoc.getServiceName());
+		serviceHealthCheckDao.updateHealthCheckServiceStatus(serviceDoc.getId(), false);
+		threadPoolExecutor.execute(statusThread);
+	}
+
+
+	private void updateUptime(long stopWatchValue) {
+		Map<String, Object> processValue = new HashMap<>();
+		processValue.put("uptime", Long.valueOf(stopWatchValue));
+		runProcessThread(Integer.valueOf(0), processValue);
+
+	}
+
+	private void sendFaultMail(String faultMessage) {
+		Map<String, Object> processValue = new HashMap<>();
+		processValue.put("serviceModel", ServiceUtil.convertServiceDocToModel(serviceDoc));
+		processValue.put("faultMessage", faultMessage);
+		runProcessThread(Integer.valueOf(1), processValue);
+	}
+
+	private void saveBlockRecord(String faultMessage) {
+		Map<String, Object> processValue = new HashMap<>();
+		processValue.put("serviceModel", ServiceUtil.convertServiceDocToModel(serviceDoc));
+		processValue.put("faultMessage", faultMessage);
+		runProcessThread(Integer.valueOf(3), processValue);
+	}
+
+	private void runProcessThread(Integer processType, Map<String, Object> processValue) {
+
+
+        synchronized (lock) {
+			AutoBlockProcessThreadService autoBlockProcessThreadService = new AutoBlockProcessThreadService();
+			autoBlockProcessThreadService.setId(serviceDoc.getId());
+			autoBlockProcessThreadService.setProcessType(processType);
+			autoBlockProcessThreadService.setProcessValue(processValue);
+			autoBlockProcessThreadService.setServiceHealthCheckDao(serviceHealthCheckDao);
+			autoBlockProcessThreadService.setBlockSendMailService(blockSendMailService);
+			autoBlockProcessThreadService.setBlockSaveService(blockSaveService);
+			autoBlockProcessThreadService.setLock(lock);
+			autoBlockProcessThreadService.setAutoBlockControlThreadService(this);
+			autoBlockProcessThreadService.setAutoBlockStatusThreadService(null);
+			Thread tAutoBlockProcess = new Thread(autoBlockProcessThreadService);
+			tAutoBlockProcess.setName(serviceDoc.getServiceName() + " " + processType);
+            threadPoolExecutor.execute(tAutoBlockProcess);
+			try {
+				while(isWait) {
+					lock.wait();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+	public ServiceHealthCheckDocument getServiceDoc() {
+		return serviceDoc;
+	}
+
+	public  void setServiceDoc(ServiceHealthCheckDocument serviceDoc) {
+		this.serviceDoc = serviceDoc;
+	}
+
+	public ServiceHealthCheckDao getServiceHealthCheckDao() {
+		return serviceHealthCheckDao;
+	}
+
+	public  void setServiceHealthCheckDao(ServiceHealthCheckDao serviceHealthCheckDao) {
+		this.serviceHealthCheckDao = serviceHealthCheckDao;
+	}
+
+
+	public BlockSendMailService getBlockSendMailService() {
+		return blockSendMailService;
+	}
+
+	public void setBlockSendMailService(BlockSendMailService blockSendMailService) {
+		this.blockSendMailService = blockSendMailService;
+	}
+
+	public BlockSaveService getBlockSaveService() {
+		return blockSaveService;
+	}
+
+	public void setBlockSaveService(BlockSaveService blockSaveService) {
+		this.blockSaveService = blockSaveService;
+	}
+
+	public boolean isWait() {
+		return isWait;
+	}
+
+	public void setWait(boolean wait) {
+		isWait = wait;
+	}
+
+    public ThreadPoolExecutor getThreadPoolExecutor() {
+        return threadPoolExecutor;
+    }
+
+    public void setThreadPoolExecutor(ThreadPoolExecutor threadPoolExecutor) {
+        this.threadPoolExecutor = threadPoolExecutor;
+    }
 }

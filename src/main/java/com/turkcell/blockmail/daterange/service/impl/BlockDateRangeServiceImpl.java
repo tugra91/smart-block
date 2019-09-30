@@ -36,7 +36,7 @@ public class BlockDateRangeServiceImpl implements BlockDateRangeService {
 	private BlockCommonService blockCommonService;
 	
 	@Override
-	public List<Document> getBlockToday(boolean isService, long skip, long limit) {
+	public List<Document> getBlockToday(boolean isService, long skip, long limit, String segment) {
 		List<Document> result = new ArrayList<>();
 		Calendar calendar = Calendar.getInstance();
 		long pastTimeMilis = 0l;
@@ -53,13 +53,13 @@ public class BlockDateRangeServiceImpl implements BlockDateRangeService {
 			if(isService) {
 				endTimeMilis = CalendarUtil.endTimeMilisInWorkTime(System.currentTimeMillis());
 			}
-			result = blockDataRangeDao.getBlockForTime(pastTimeMilis,endTimeMilis, skip, limit);
+			result = blockDataRangeDao.getBlockForTime(pastTimeMilis,endTimeMilis, skip, limit, segment);
 		}
 		return result;
 	}
 
 	@Override
-	public List<Document> getBlockWeek(long startTimeMilis, boolean isService, long skip, long limit) {
+	public List<Document> getBlockWeek(long startTimeMilis, boolean isService, long skip, long limit, String segment) {
 		List<Document> result = new ArrayList<>();
 		Calendar calendar = Calendar.getInstance();
 		long pastTimeMilis = 0l;
@@ -95,14 +95,14 @@ public class BlockDateRangeServiceImpl implements BlockDateRangeService {
 			calendar.set(Calendar.MINUTE, 30);
 			endTimeMilis = calendar.getTimeInMillis();	
 		}
-		result = blockDataRangeDao.getBlockForTime(pastTimeMilis,endTimeMilis, skip, limit);
+		result = blockDataRangeDao.getBlockForTime(pastTimeMilis,endTimeMilis, skip, limit, segment);
 		return result;
 	}
 
 
 
 	@Override
-	public List<Document> getBlockMonth(long startTimeMilis, boolean isService, long skip, long limit) {
+	public List<Document> getBlockMonth(long startTimeMilis, boolean isService, long skip, long limit, String segment) {
 		List<Document> result = new ArrayList<>();
 		List<Document> weekResult = new ArrayList<>();
 		long pastTimeMilis = 0l;
@@ -157,7 +157,7 @@ public class BlockDateRangeServiceImpl implements BlockDateRangeService {
 //				if(isService) {
 //					endTimeMilis = CalendarUtil.endTimeMilisInWorkTime(System.currentTimeMillis());
 //				}
-				weekResult = getBlockOfMonthly(pastTimeMilis, endTimeMilis, skip, limit);
+				weekResult = getBlockOfMonthly(pastTimeMilis, endTimeMilis, skip, limit, segment);
 				result = Stream.concat(weekResult.stream(), result.stream()).collect(Collectors.toList());
 				
 			}
@@ -173,26 +173,26 @@ public class BlockDateRangeServiceImpl implements BlockDateRangeService {
 
 
 	@Override
-	public BlockPieChartOutput getBlockPiechartInfoForToday(boolean isService,String env) {
-		List<Document> blockList = this.getBlockToday(isService,0, 0);
+	public BlockPieChartOutput getBlockPiechartInfoForToday(boolean isService,String env, String segment) {
+		List<Document> blockList = this.getBlockToday(isService,0, 0, segment);
 		return calculatePieChartInfo(blockList, env);
 	}
 
 	@Override
 	public BlockPieChartOutput getBlockPiechartInfoForWeekAndMonth(long startDateMilis, 
-			boolean isService, String env, boolean isWeek) {
+			boolean isService, String env, boolean isWeek, String segment) {
 		List<Document> blockList = new ArrayList<>();
 		if(isWeek) {
-			blockList = this.getBlockWeek(startDateMilis, isService, 0, 0);
+			blockList = this.getBlockWeek(startDateMilis, isService, 0, 0, segment);
 		} else {
-			blockList = this.getBlockMonth(startDateMilis, isService, 0, 0);
+			blockList = this.getBlockMonth(startDateMilis, isService, 0, 0, segment);
 		}
 
 		return calculatePieChartInfo(blockList, env);
 	}
 	
 	@Override
-	public List<Document> getBlockOfParameter(long pastTimeMilis, long endTimeMilis, long skip, long limit) {
+	public List<Document> getBlockOfParameter(long pastTimeMilis, long endTimeMilis, long skip, long limit, String segment) {
 		List<Document> result = new ArrayList<>();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(pastTimeMilis);
@@ -203,12 +203,12 @@ public class BlockDateRangeServiceImpl implements BlockDateRangeService {
 		calendar.set(Calendar.HOUR_OF_DAY, 16);
 		calendar.set(Calendar.MINUTE,30);
 		endTimeMilis = calendar.getTimeInMillis();
-		result = blockDataRangeDao.getBlockForTime(pastTimeMilis, endTimeMilis, skip, limit);
+		result = blockDataRangeDao.getBlockForTime(pastTimeMilis, endTimeMilis, skip, limit, segment);
 		return result;
 	}
 	
 	@Override
-	public List<Document> getBlockOfParameter(long pastTimeMilis, long endTimeMilis) {
+	public List<Document> getBlockOfParameter(long pastTimeMilis, long endTimeMilis, String segment) {
 		List<Document> result = new ArrayList<>();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(pastTimeMilis);
@@ -219,7 +219,7 @@ public class BlockDateRangeServiceImpl implements BlockDateRangeService {
 		calendar.set(Calendar.HOUR_OF_DAY, 16);
 		calendar.set(Calendar.MINUTE,30);
 		endTimeMilis = calendar.getTimeInMillis();
-		result = blockDataRangeDao.getBlockForTime(pastTimeMilis, endTimeMilis);
+		result = blockDataRangeDao.getBlockForTime(pastTimeMilis, endTimeMilis, segment);
 		return result;
 	}
 	
@@ -262,7 +262,7 @@ public class BlockDateRangeServiceImpl implements BlockDateRangeService {
 		return editResult;
 	}
 	
-	private List<Document> getBlockOfMonthly(long pastTimeMilis, long endTimeMilis, long skip, long limit) {
+	private List<Document> getBlockOfMonthly(long pastTimeMilis, long endTimeMilis, long skip, long limit, String segment) {
 		List<Document> result = new ArrayList<>();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(pastTimeMilis);
@@ -273,7 +273,7 @@ public class BlockDateRangeServiceImpl implements BlockDateRangeService {
 		calendar.set(Calendar.HOUR_OF_DAY, 16);
 		calendar.set(Calendar.MINUTE,30);
 		endTimeMilis = calendar.getTimeInMillis();
-		result = blockDataRangeDao.getBlockForMontly(pastTimeMilis, endTimeMilis, skip, limit);
+		result = blockDataRangeDao.getBlockForMontly(pastTimeMilis, endTimeMilis, skip, limit, segment);
 		return result;
 	}
 	
@@ -423,7 +423,7 @@ public class BlockDateRangeServiceImpl implements BlockDateRangeService {
 	}
 
 	@Override
-	public List<Document> getBlockOfYesterday() {
+	public List<Document> getBlockOfYesterday(String segment) {
 		List<Document> result = new ArrayList<>();
 		Calendar calendar = Calendar.getInstance();
 		long pastTimeMilis = 0l;
@@ -443,14 +443,14 @@ public class BlockDateRangeServiceImpl implements BlockDateRangeService {
 			calendar.set(Calendar.HOUR_OF_DAY, 16);
 			calendar.set(Calendar.MINUTE, 30);
 			endTimeMilis = calendar.getTimeInMillis();
-			result = blockDataRangeDao.getBlockForTime(pastTimeMilis, endTimeMilis);
+			result = blockDataRangeDao.getBlockForTime(pastTimeMilis, endTimeMilis, segment);
 		}
 		return result;
 	}
 
 	@Override
-	public List<Document> getBlockForAllStatus(long pastTimeMilis, long endTimeMilis) {
-		return blockDataRangeDao.getBlockForAllStatus(pastTimeMilis, endTimeMilis);
+	public List<Document> getBlockForAllStatus(long pastTimeMilis, long endTimeMilis, String segment) {
+		return blockDataRangeDao.getBlockForAllStatus(pastTimeMilis, endTimeMilis, segment);
 	}
 	
 	

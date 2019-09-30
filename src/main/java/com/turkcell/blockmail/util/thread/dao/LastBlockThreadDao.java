@@ -6,8 +6,8 @@ import org.bson.Document;
 
 public interface LastBlockThreadDao {
 	
-	public long getLastCreateDate();
+	public long getLastCreateDate(String segment);
 	
-	public List<Document> fetchLastAddedBlock(long createDate);
+	public List<Document> fetchLastAddedBlock(long createDate, String segment);
 
 }

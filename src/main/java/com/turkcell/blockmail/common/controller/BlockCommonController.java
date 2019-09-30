@@ -2,11 +2,8 @@ package com.turkcell.blockmail.common.controller;
 
 import com.turkcell.blockmail.document.BlockSystemListDocument;
 import com.turkcell.blockmail.document.BlockTypeListDocument;
-import com.turkcell.blockmail.model.BlockHoursOutput;
-import com.turkcell.blockmail.model.BlockInfoOutput;
-import com.turkcell.blockmail.model.BlockOnlyIdInput;
-import com.turkcell.blockmail.model.BlockSystemListOutput;
-import com.turkcell.blockmail.model.BlockTypeListOutput;
+import com.turkcell.blockmail.model.*;
+import com.turkcell.blockmail.threadService.model.GenericResultOutput;
 
 public interface BlockCommonController {
 	
@@ -21,5 +18,8 @@ public interface BlockCommonController {
 	public BlockHoursOutput getBlockHours(BlockOnlyIdInput input);
 	
 	public void trySendEndDayReportMail();
+
+	GenericResultOutput saveBlockSystemParameter(BlockSystemParameterInput input);
+
 	
 }

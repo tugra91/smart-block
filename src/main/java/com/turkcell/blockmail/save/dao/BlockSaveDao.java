@@ -22,6 +22,8 @@ public interface BlockSaveDao {
 	
 	public BlockInfoDocumentInput updateBlockTemp(ObjectId id, long endDate, String endBlockUser);
 	
-	public List<BlockInfoDocumentInput> getActiveBlockList();
+	public List<BlockInfoDocumentInput> getActiveBlockList(String segment);
+
+	List<BlockInfoDocumentInput> getFindByServiceId(ObjectId id);
 
 }

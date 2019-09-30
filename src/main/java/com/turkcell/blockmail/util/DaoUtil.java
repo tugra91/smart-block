@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -30,7 +31,7 @@ public class DaoUtil {
 	
 	public static TypedAggregation<BlockInfoDocumentInput> getAggretionQuery(long pastTimeMilis, long endTimeMilis, 
 			long skip, long limit, MatchOperation matchOperation, 
-			SortOperation sortOperation, GroupOperation groupOperation) {
+			SortOperation sortOperation, GroupOperation groupOperation, String segment) {
 		
 		Calendar calendar = Calendar.getInstance();
 		long endDateControl = 0l;
@@ -50,10 +51,12 @@ public class DaoUtil {
 		calendar.set(Calendar.MINUTE, 30);
 		long firstDayBlockHour = calendar.getTimeInMillis();
 		
+		
+		Criteria cSegment = segment != null ? where("segment").is(segment) : where("startDate").exists(true);
 
 		limit = limit == 0l ? 1000000000000000000l : limit;
 
-		MatchOperation variableMatchOperation = matchOperation == null ? new MatchOperation(where("startDate").exists(true)
+		MatchOperation variableMatchOperation = matchOperation == null ? new MatchOperation(cSegment
 				.orOperator(
 								where("startDate").lte(pastTimeMilis).andOperator(where("status").is(true)),
 								where("startDate").lte(pastTimeMilis).andOperator(where("endDate").gte(pastTimeMilis).lte(endTimeMilis),where("status").is(false)),
@@ -273,7 +276,7 @@ public class DaoUtil {
 //				);
 	}
 	
-	public static TypedAggregation<BlockInfoDocumentInput> getLastBlocks(MatchOperation matchOperation, long skip, int limit) {
+	public static TypedAggregation<BlockInfoDocumentInput> getLastBlocks(MatchOperation matchOperation, long skip, int limit, String segment) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
@@ -291,7 +294,7 @@ public class DaoUtil {
 				.push(ROOT).as("block");
 		SortOperation sortOperation = new SortOperation(Sort.by(Direction.DESC, Aggregation.previousOperation(), "createDate" ));
 		
-		TypedAggregation<BlockInfoDocumentInput> aggregation = DaoUtil.getAggretionQuery(pastTimeMilis, endTimeMilis, skip, limit, matchOperation, sortOperation, groupOperation);
+		TypedAggregation<BlockInfoDocumentInput> aggregation = DaoUtil.getAggretionQuery(pastTimeMilis, endTimeMilis, skip, limit, matchOperation, sortOperation, groupOperation, segment);
 		
 		return aggregation;
 	}

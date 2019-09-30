@@ -2,6 +2,8 @@ package com.turkcell.blockmail;
 
 import java.util.Arrays;
 
+import com.turkcell.blockmail.threadService.AutoBlockStartThreadService;
+import com.turkcell.blockmail.threadService.document.ServiceHealthCheckDocument;
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.http2.Http2Protocol;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +19,13 @@ import com.turkcell.blockmail.threadService.AutoBlockControlThreadService;
 public class BlockMailThreadConfiguration {
 	
 	@Autowired
-	private AutoBlockControlThreadService autoBlockThreadService;
+	private AutoBlockStartThreadService autoBlockThreadService;
 	
 	@Bean
 	public String startAutoBlockThreadService() {
 		Thread autoBlockThread = new Thread(autoBlockThreadService);
-		System.out.println("THREADLERRR BAŞLASINNNNN");
-//		autoBlockThread.start();
+		System.out.println(Thread.currentThread().getName() + " THREADLERRR BAŞLASINNNNN");
+		autoBlockThread.start();
 		return "OK";
 	}
 

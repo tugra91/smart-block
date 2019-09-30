@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.aggregation.MatchOperation;
 import org.springframework.data.mongodb.core.aggregation.TypedAggregation;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
 import com.turkcell.blockmail.daterange.dao.BlockDataRangeDao;
@@ -24,9 +25,9 @@ public class BlockDataRangeDaoImpl implements BlockDataRangeDao {
 	private MongoTemplate mongoTemplate;
 	
 	@Override
-	public List<Document> getBlockForTime(long pastTimeMilis, long endTimeMilis) {
+	public List<Document> getBlockForTime(long pastTimeMilis, long endTimeMilis, String segment) {
 		List<Document> result = new ArrayList<>();
-		TypedAggregation<BlockInfoDocumentInput> aggretion = DaoUtil.getAggretionQuery(pastTimeMilis, endTimeMilis, 0, 0, null, null, null);
+		TypedAggregation<BlockInfoDocumentInput> aggretion = DaoUtil.getAggretionQuery(pastTimeMilis, endTimeMilis, 0, 0, null, null, null, segment);
 		try {
 			AggregationResults<Document> returnList = mongoTemplate.aggregate(aggretion, Document.class);
 			result  = returnList.getMappedResults();
@@ -37,11 +38,11 @@ public class BlockDataRangeDaoImpl implements BlockDataRangeDao {
 	}
 	
 	@Override
-	public List<Document> getBlockForTime(long pastTimeMilis, long endTimeMilis, long skip, long limit) {
+	public List<Document> getBlockForTime(long pastTimeMilis, long endTimeMilis, long skip, long limit, String segment) {
 		List<Document> result = new ArrayList<>();
 		
 	
-		TypedAggregation<BlockInfoDocumentInput> aggretion = DaoUtil.getAggretionQuery(pastTimeMilis, endTimeMilis, skip, limit, null,null,null);
+		TypedAggregation<BlockInfoDocumentInput> aggretion = DaoUtil.getAggretionQuery(pastTimeMilis, endTimeMilis, skip, limit, null,null,null, segment);
 		try {
 			AggregationResults<Document> returnList = mongoTemplate.aggregate(aggretion, Document.class);
 			result  = returnList.getMappedResults();
@@ -53,10 +54,12 @@ public class BlockDataRangeDaoImpl implements BlockDataRangeDao {
 	}
 	
 	@Override
-	public List<Document> getBlockForAllStatus(long pastTimeMilis, long endTimeMilis) {
+	public List<Document> getBlockForAllStatus(long pastTimeMilis, long endTimeMilis, String segment) {
 		List<Document> result = new ArrayList<>();
-		MatchOperation mOperation = new MatchOperation(where("startDate").gte(pastTimeMilis));
-		TypedAggregation<BlockInfoDocumentInput> aggretion = DaoUtil.getAggretionQuery(pastTimeMilis, endTimeMilis, 0, 0, mOperation, null, null);
+		Criteria cSegment = segment != null ? where("segment").is(segment).and("startDate").gte(pastTimeMilis) : where("startDate").gte(pastTimeMilis);
+		
+		MatchOperation mOperation = new MatchOperation(cSegment);
+		TypedAggregation<BlockInfoDocumentInput> aggretion = DaoUtil.getAggretionQuery(pastTimeMilis, endTimeMilis, 0, 0, mOperation, null, null, null);
 		try {
 			AggregationResults<Document> returnList = mongoTemplate.aggregate(aggretion, Document.class);
 			result  = returnList.getMappedResults();
@@ -69,14 +72,17 @@ public class BlockDataRangeDaoImpl implements BlockDataRangeDao {
 	
 	
 	@Override
-	public List<Document> getBlockForMontly(long pastTimeMilis, long endTimeMilis, long skip, long limit) {
+	public List<Document> getBlockForMontly(long pastTimeMilis, long endTimeMilis, long skip, long limit, String segment) {
 		List<Document> result = new ArrayList<>();
-		MatchOperation mOperation = new MatchOperation(where("startDate").exists(true)
+		
+		Criteria cSegment = segment != null ? where("segment").is(segment) : where("startDate").exists(true);
+		
+		MatchOperation mOperation = new MatchOperation(cSegment
 				.orOperator(where("startDate").gte(pastTimeMilis).lte(endTimeMilis),
 							where("startDate").lte(pastTimeMilis).and("endDate").gte(pastTimeMilis).lte(endTimeMilis).and("status").is(false),
 							where("startDate").lte(pastTimeMilis).and("status").is(true)));
 		
-		TypedAggregation<BlockInfoDocumentInput> aggretion = DaoUtil.getAggretionQuery(pastTimeMilis, endTimeMilis, skip, limit, mOperation, null, null);
+		TypedAggregation<BlockInfoDocumentInput> aggretion = DaoUtil.getAggretionQuery(pastTimeMilis, endTimeMilis, skip, limit, mOperation, null, null, null );
 		try {
 			AggregationResults<Document> returnList = mongoTemplate.aggregate(aggretion, Document.class);
 			result  = returnList.getMappedResults();

@@ -93,8 +93,8 @@ class GenericDateRangeBlock extends React.Component {
 		var type = this.props.dateRange;
 
 		if(type == 'Today') {
-			var baseBlockUrl = "/getBlockToday?";
-			var basePieUrl = "/getPieChartToday?";
+			var baseBlockUrl = "/getBlockToday?segment=''&";
+			var basePieUrl = "/getPieChartToday?segment=''&";
 			this.setState({
 				blockUrl:baseBlockUrl,
 				pieBlockUrl:basePieUrl
@@ -102,16 +102,16 @@ class GenericDateRangeBlock extends React.Component {
 			this.fetchPiechartInfo("", basePieUrl);
 
 		} else if(type == 'Week') {
-			var baseBlockUrl = "/getBlockWeek?";
-			var basePieUrl = "/getPieChartWeek?startDate="+moment().valueOf()+"&";
+			var baseBlockUrl = "/getBlockWeek?segment=''&";
+			var basePieUrl = "/getPieChartWeek?startDate="+moment().valueOf()+"&segment=''&";
 			this.setState({
 				blockUrl:baseBlockUrl+"startDate="+moment().valueOf()+"&",
 				pieBlockUrl:basePieUrl
 			});
 			this.fetchPiechartInfo("", basePieUrl);
 		} else if(type = 'Month') {
-			var baseBlockUrl = "/getBlockMonth?";
-			var basePieUrl = "/getPieChartMonth?startDate="+moment().valueOf()+"&";
+			var baseBlockUrl = "/getBlockMonth?segment=''&";
+			var basePieUrl = "/getPieChartMonth?startDate="+moment().valueOf()+"&segment=''&";
 			this.setState({
 				blockUrl:baseBlockUrl+"startDate="+moment().valueOf()+"&",
 				pieBlockUrl:basePieUrl

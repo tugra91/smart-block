@@ -25,12 +25,27 @@ class LoginPage extends React.Component {
     this.login = this.login.bind(this);
     this.failModalStatus = this.failModalStatus.bind(this);
     this.registerFunc = this.registerFunc.bind(this);
+	this.enterEvent = this.enterEvent.bind(this);
   }
 
   componentWillMount(){
     if(this.props.isLogin) {
 			this.props.history.push("/");
-		}
+	}
+  }
+
+  componentDidMount() {
+	window.addEventListener('keydown', this.enterEvent, { passive: true });
+  }
+
+  componentWillUnmount(){
+	window.removeEventListener('keydown', this.enterEvent, { passive: true });
+  }
+
+  enterEvent(event) {
+	if(event.key == 'Enter') {
+		this.login();
+	}
   }
 
   login() {
@@ -84,6 +99,8 @@ class LoginPage extends React.Component {
       isRegister:data
     })
   }
+
+  
 
 
 

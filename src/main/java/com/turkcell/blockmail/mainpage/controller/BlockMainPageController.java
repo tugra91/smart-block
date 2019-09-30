@@ -9,11 +9,11 @@ import com.turkcell.blockmail.model.BlockPieChartOutput;
 
 public interface BlockMainPageController {
 	
-	public BlockInfoAsTimeOutput getLastBlocks(long skip,  int limit);
+	public BlockInfoAsTimeOutput getLastBlocks(long skip,  int limit, String segment);
 	
 	public DeferredResult<SseEmitter> getSseEmitter(String clientId);
 	
-	public DeferredResult<BlockInfoAsTimeOutput> getLongPoll(long lastCreatedDate, String clientId);
+	public DeferredResult<BlockInfoAsTimeOutput> getLongPoll(long lastCreatedDate, String clientId, String segment);
 	
 	public BlockPieChartOutput getPiechartInfoLastBlocks(BlockPieChartLastBlocksInput input);
 }

@@ -1,5 +1,7 @@
 package com.turkcell.blockmail.common.service;
 
+import com.turkcell.blockmail.document.BlockSystemParameterDocument;
+import com.turkcell.blockmail.threadService.model.GenericResultOutput;
 import org.bson.types.ObjectId;
 
 import com.turkcell.blockmail.document.BlockSystemListDocument;
@@ -20,6 +22,10 @@ public interface BlockCommonService {
 	public BlockInfoOutput saveBlockType(BlockTypeListDocument input);
 	
 	public BlockHoursOutput getBlockHours(ObjectId id);
+
+	GenericResultOutput saveBlockSystemParameter(String name, String value);
+
+	String getBlockSystemParameter(String name);
 
 	
 }

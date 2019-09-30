@@ -43,6 +43,14 @@ public class BlockSaveServiceImpl implements BlockSaveService {
 	public BlockInfoOutput saveBlock(BlockInfoDocumentInput input) {
 
 		BlockInfoOutput output = new BlockInfoOutput();
+		input.setSegment("MARKETING_SOLUTION");
+
+		if(input.getServiceId() != null) {
+			UserInformationModel userInfo = loginPageService.getUserInformation("AUTOBLOCK");
+			input.setUserId(userInfo.getId());
+			input.setOpenBlockUser(userInfo.getName() + " " + userInfo.getSurname());
+		}
+
 		try {
 			if(input instanceof BlockInfoDocumentInput) {
 				if(!StringUtils.isEmpty(input.getBlockName()) 
@@ -163,8 +171,13 @@ public class BlockSaveServiceImpl implements BlockSaveService {
 	}
 
 	@Override
-	public List<BlockInfoDocumentInput> getActiveBlockList() {
-		return blockSaveDao.getActiveBlockList();
+	public List<BlockInfoDocumentInput> getActiveBlockList(String segment) {
+		return blockSaveDao.getActiveBlockList(segment);
+	}
+
+	@Override
+	public List<BlockInfoDocumentInput> getBlockByServiceId(ObjectId serviceId) {
+		return blockSaveDao.getFindByServiceId(serviceId);
 	}
 
 }

@@ -16,9 +16,13 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.mail.MessagingException;
 
+import com.turkcell.blockmail.common.service.BlockCommonService;
+import com.turkcell.blockmail.threadService.model.HealthCheckServiceModel;
+import com.turkcell.blockmail.util.CalendarUtil;
 import org.apache.tomcat.util.codec.binary.StringUtils;
 import org.bson.Document;
 import org.jfree.chart.ChartFactory;
@@ -41,6 +45,7 @@ import com.turkcell.blockmail.model.BlockPieChartInfoModel;
 import com.turkcell.blockmail.model.BlockPieChartOutput;
 import com.turkcell.blockmail.model.UserInformationModel;
 import com.turkcell.blockmail.util.mail.dao.BlockSendMailDao;
+import com.turkcell.blockmail.util.mail.document.ReportMailModelDocument;
 import com.turkcell.blockmail.util.mail.service.BlockSendMailService;
 
 import microsoft.exchange.webservices.data.core.ExchangeService;
@@ -61,6 +66,9 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 	
 	@Autowired
 	private BlockSendMailDao blockSendMailDao;
+
+	@Autowired
+	private BlockCommonService blockCommonService;
 
 	private Gson gson = new Gson();
 
@@ -88,18 +96,18 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 	
 	private EmailMessage getClientMessage() {
 		ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP2);
-		ExchangeCredentials credentials = new WebCredentials(StringUtils.newStringUtf8(Base64.getDecoder().decode("Example")), 
-				StringUtils.newStringUtf8(Base64.getDecoder().decode("Example")), StringUtils.newStringUtf8(Base64.getDecoder().decode("Example")));
+		ExchangeCredentials credentials = new WebCredentials(StringUtils.newStringUtf8(Base64.getDecoder().decode(blockCommonService.getBlockSystemParameter("MAIL_USERNAME"))),
+				StringUtils.newStringUtf8(Base64.getDecoder().decode(blockCommonService.getBlockSystemParameter("MAIL_PASSWORD"))), StringUtils.newStringUtf8(Base64.getDecoder().decode(blockCommonService.getBlockSystemParameter("MAIL_DOMAIN"))));
 		service.setCredentials(credentials);
 		try {
-			service.setUrl(new URI("https://mail.example.com/ews/exchange.asmx"));
+			service.setUrl(new URI("https://mail.turkcell.com.tr/ews/exchange.asmx"));
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 		EmailMessage message = null;
 		try {
 			message = new EmailMessage(service);
-			message.setFrom(new EmailAddress("SMART-BLOCK@example.com"));
+			message.setFrom(new EmailAddress("SMART-BLOCK@turkcell.com.tr"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -110,10 +118,10 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 	public void sendExampleMail() {
 		EmailMessage message = getClientMessage();
 		try {
-			message.getToRecipients().add("example@example.com");
+			message.getToRecipients().add("tugra.er@turkcell.com.tr");
 			MessageBody body = new MessageBody();
 			body.setBodyType(BodyType.HTML);
-			body.setText(this.createMailTemplate());
+			body.setText("dasdasdas");
 			message.setBody(body);
 			message.send();
 		} catch(Exception e) {
@@ -127,37 +135,43 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 		try {
 			
 			
+			for(ReportMailModelDocument rs:blockSendMailDao.getMailInformationViaRole("MANAGER")) {
+				
+				
+				for(String toRs:rs.getToList()) {
+					message.getToRecipients().add(toRs);
+				}
+				for(String ccRs:rs.getCcList()) {
+					message.getCcRecipients().add(ccRs);
+				}
 
-			
-			message.getToRecipients().add("example@example.com");
-		
-			
-			message.setSubject("XL-Blok Günlük Rapor - " + sdf.format(new Date(System.currentTimeMillis())));
 
-			
-	
-			
-			MessageBody body = new MessageBody();
-			body.setBodyType(BodyType.HTML);
-			body.setText(this.createMailTemplate());
-			message.setBody(body);			
-			
-			FileAttachment inLineBlockTodayFile = message.getAttachments().addFileAttachment("today", getBytePieChartToday().toByteArray());
-			inLineBlockTodayFile.setContentType("image/jpeg");
-			inLineBlockTodayFile.setContentId("<pie-today>");
-			inLineBlockTodayFile.setIsInline(true);
-			
-			FileAttachment inLineBlockWeekFile = message.getAttachments().addFileAttachment("week", getBytePieChartWeek().toByteArray());
-			inLineBlockWeekFile.setContentType("image/jpeg");
-			inLineBlockWeekFile.setContentId("<pie-week>");
-			inLineBlockWeekFile.setIsInline(true);
-			
-			FileAttachment inLineBlockMonthFile = message.getAttachments().addFileAttachment("month", getBytePieChartMonth().toByteArray());
-			inLineBlockMonthFile.setContentType("image/jpeg");
-			inLineBlockMonthFile.setContentId("pie-month>");
-			inLineBlockMonthFile.setIsInline(true);
-			
-			message.send();
+
+				message.setSubject("XL-Blok Günlük Rapor - " + sdf.format(new Date(System.currentTimeMillis())));
+
+
+				MessageBody body = new MessageBody();
+				body.setBodyType(BodyType.HTML);
+				body.setText(this.createMailTemplate(rs.getSegment()));
+				message.setBody(body);			
+
+				FileAttachment inLineBlockTodayFile = message.getAttachments().addFileAttachment("today", getBytePieChartToday().toByteArray());
+				inLineBlockTodayFile.setContentType("image/jpeg");
+				inLineBlockTodayFile.setContentId("<pie-today>");
+				inLineBlockTodayFile.setIsInline(true);
+
+				FileAttachment inLineBlockWeekFile = message.getAttachments().addFileAttachment("week", getBytePieChartWeek().toByteArray());
+				inLineBlockWeekFile.setContentType("image/jpeg");
+				inLineBlockWeekFile.setContentId("<pie-week>");
+				inLineBlockWeekFile.setIsInline(true);
+
+				FileAttachment inLineBlockMonthFile = message.getAttachments().addFileAttachment("month", getBytePieChartMonth().toByteArray());
+				inLineBlockMonthFile.setContentType("image/jpeg");
+				inLineBlockMonthFile.setContentId("pie-month>");
+				inLineBlockMonthFile.setIsInline(true);
+
+				message.send();
+			}
 		} catch (MessagingException e) {
 			System.out.println(e);
 		} catch (IOException e ) {
@@ -169,7 +183,7 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 	}
 	
 	@Override
-	public void senEndDayWarningMail(List<BlockInfoDocumentInput> blockList) {
+	public void senEndDayWarningMail(List<BlockInfoDocumentInput> blockList, ReportMailModelDocument reportMail) {
 		EmailMessage message = getClientMessage();
 		StringBuilder body = new StringBuilder();
 		body.append("<html>");
@@ -222,9 +236,16 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 		body.append("</html> ");
 		
 		try {
+
+
+
 			
-			message.getToRecipients().add("example");
-			message.getToRecipients().add("example");
+			for(String toRs:reportMail.getToList()) {
+				message.getToRecipients().add(toRs);
+			}
+			for(String ccRs:reportMail.getCcList()) {
+				message.getCcRecipients().add(ccRs);
+			}
 			
 			message.setSubject("SMART-BLOCK - Aktif Bloklar Hatırlatma");
 			
@@ -232,8 +253,7 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 			mBody.setBodyType(BodyType.HTML);
 			mBody.setText(body.toString());
 			message.setBody(mBody);			
-			
-			
+
 			message.send();
 
 		} catch (MessagingException e) {
@@ -248,7 +268,7 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 	}
 	
 	@Override
-	public void sendEndDayNoBlockMail() {
+	public void sendEndDayNoBlockMail(ReportMailModelDocument reportMail) {
 		EmailMessage message = getClientMessage();
 		StringBuilder body = new StringBuilder();
 		body.append("<html>");
@@ -266,9 +286,16 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 		body.append("</html> ");
 		
 		try {
-			message.getToRecipients().add("example");
-			message.getToRecipients().add("example");
-		
+			
+
+
+			
+			for(String toRs:reportMail.getToList()) {
+				message.getToRecipients().add(toRs);
+			}
+			for(String ccRs:reportMail.getCcList()) {
+				message.getCcRecipients().add(ccRs);
+			}
 			message.setSubject("SMART-BLOCK - Blok Hatırlatma");
 		
 
@@ -292,7 +319,7 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 	}
 	
 	@Override
-	public void sendEndDayExistBlockMail(int blockCount) {
+	public void sendEndDayExistBlockMail(int blockCount, ReportMailModelDocument reportMail) {
 		EmailMessage message = getClientMessage();
 		StringBuilder body = new StringBuilder();
 		body.append("<html>");
@@ -309,8 +336,16 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 		body.append("</html> ");
 		
 		try {
-			message.getToRecipients().add("example");
-			message.getToRecipients().add("example");
+			
+
+
+			
+			for(String toRs:reportMail.getToList()) {
+				message.getToRecipients().add(toRs);
+			}
+			for(String ccRs:reportMail.getCcList()) {
+				message.getCcRecipients().add(ccRs);
+			}
 		
 			message.setSubject("SMART-BLOCK - Blok Hatırlatma");
 		
@@ -507,8 +542,151 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 			}
 		}
 	}
-	
-	
+
+	@Override
+	public void sendServiceFaultMail(String role, HealthCheckServiceModel serviceModel, String faultMessage) {
+
+		if(!CalendarUtil.isWorkTime()) {
+			return;
+		}
+		System.out.println("Fault Mail Gönderildi");
+
+		ReportMailModelDocument reportDoc = blockSendMailDao.getMailInformationViaSegmentAndRole(serviceModel.getSegment(), role);
+
+
+		EmailMessage message = getClientMessage();
+		StringBuilder body = new StringBuilder();
+		body.append("<html>");
+		body.append("<head> ");
+		body.append("<style type='text/css'> ");
+		body.append(".tg  {border-collapse:collapse;border-spacing:0;} ");
+		body.append(".tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;} ");
+		body.append(".tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;} ");
+		body.append(".tg .tg-juju{font-family:'Courier New', Courier, monospace !important;;text-align:left;vertical-align:top} ");
+		body.append(".tg .tg-0lax{text-align:left;vertical-align:top} ");
+		body.append("</style> ");
+		body.append("</head> ");
+		body.append("<body> ");
+		body.append("<p>Merhabalar, </p>  <br>");
+		body.append("<p>"+serviceModel.getServiceName() + " adlı servis hata almıştır. Aşağıda, servisten dönen hatayı bulabilirsiniz.  </p>");
+		body.append("<br>");
+		body.append("<p>İyi Çalışmalar</p>");
+		body.append("<p><b>SMART-BLOCK</b></p> <br><br> ");
+		body.append("<p> <b> HATA : </b></p><br>");
+		body.append("<p>"+faultMessage + "</p>");
+		body.append("</body> ");
+		body.append("</html> ");
+
+		try {
+
+			List<ReportMailModelDocument> reportMailList = blockSendMailDao.getMailInformationViaRole("END_DAY_WARNING_MAIL");
+
+
+
+//			for(ReportMailModelDocument rs:blockSendMailDao.getMailInformationViaRole("END_DAY_WARNING_MAIL")) {
+			for(String toRs:reportDoc.getToList()) {
+				message.getToRecipients().add(toRs);
+			}
+			for(String ccRs:reportDoc.getCcList()) {
+				message.getCcRecipients().add(ccRs);
+			}
+
+			message.setSubject("SMART-BLOCK - "+serviceModel.getServiceName() + " isimli servis hata almıştır. ");
+
+			MessageBody mBody = new MessageBody();
+			mBody.setBodyType(BodyType.HTML);
+			mBody.setText(body.toString());
+			message.setBody(mBody);
+
+//			message.addRecipient(Message.RecipientType.TO, new InternetAddress("tugra.er@turkcell.com.tr"));
+
+			message.send();
+//			}
+
+		} catch (MessagingException e) {
+			System.out.println(e);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+	}
+
+	@Override
+	public void sendServiceRerunnigMail(String role, HealthCheckServiceModel serviceModel) {
+
+		if(!CalendarUtil.isWorkTime()) {
+			return;
+		}
+
+		System.out.println("ReRunning Maile Girdi ");
+
+		ReportMailModelDocument reportDoc = blockSendMailDao.getMailInformationViaSegmentAndRole(serviceModel.getSegment(), role);
+
+
+		EmailMessage message = getClientMessage();
+		StringBuilder body = new StringBuilder();
+		body.append("<html>");
+		body.append("<head> ");
+		body.append("<style type='text/css'> ");
+		body.append(".tg  {border-collapse:collapse;border-spacing:0;} ");
+		body.append(".tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;} ");
+		body.append(".tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;} ");
+		body.append(".tg .tg-juju{font-family:'Courier New', Courier, monospace !important;;text-align:left;vertical-align:top} ");
+		body.append(".tg .tg-0lax{text-align:left;vertical-align:top} ");
+		body.append("</style> ");
+		body.append("</head> ");
+		body.append("<body> ");
+		body.append("<p>Merhabalar, </p>  <br>");
+		body.append("<p>"+serviceModel.getServiceName() + " adlı servis yeniden ayağa kalkmıştır. Bilgilerinize. </p>");
+		body.append("<br>");
+		body.append("<p>İyi Çalışmalar</p>");
+		body.append("<p><b>SMART-BLOCK</b></p>");
+		body.append("</body> ");
+		body.append("</html> ");
+
+		try {
+
+			List<ReportMailModelDocument> reportMailList = blockSendMailDao.getMailInformationViaRole("END_DAY_WARNING_MAIL");
+
+
+
+//			for(ReportMailModelDocument rs:blockSendMailDao.getMailInformationViaRole("END_DAY_WARNING_MAIL")) {
+			for(String toRs:reportDoc.getToList()) {
+				message.getToRecipients().add(toRs);
+			}
+			for(String ccRs:reportDoc.getCcList()) {
+				message.getCcRecipients().add(ccRs);
+			}
+
+			message.setSubject("SMART-BLOCK - "+serviceModel.getServiceName() + " isimli servis ayağa kalkmıştır. ");
+
+			MessageBody mBody = new MessageBody();
+			mBody.setBodyType(BodyType.HTML);
+			mBody.setText(body.toString());
+			message.setBody(mBody);
+
+//			message.addRecipient(Message.RecipientType.TO, new InternetAddress("tugra.er@turkcell.com.tr"));
+
+			message.send();
+//			}
+
+		} catch (MessagingException e) {
+			System.out.println(e);
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
 	@Override
 	public void sendDeleteBlockMail(BlockInfoDocumentInput blockInfo, UserInformationModel blockOwnerInfo,
 			UserInformationModel deleteUserInfo) {
@@ -560,25 +738,158 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 		
 	}
 	
-	private String createMailTemplate() throws JsonParseException, JsonMappingException, IOException {
+//	@Override
+//	public void sendFaultBlockMail(String status, int statusCode) {
+//		
+//		MimeMessage message = mailSender.createMimeMessage();
+//		
+//		StringBuilder body = new StringBuilder();
+//		body.append("<html>");
+//		body.append("<head> ");
+//		body.append("</head> ");
+//		body.append("<body> ");
+//		body.append("<p>Merhabalar, </p> ");
+//		body.append("<p> Health Check Adlı Servisiniz "+String.valueOf(statusCode)+ " hatası almaktadır. En kısa sürede hatanın çözümünü sağlamanız rica olunur. Aşağıda dönen hatanın detaylarını bulabilirsiniz. </p> ");
+//		body.append("<br> <br>  ");
+//		body.append(status);
+//		body.append("</body> ");
+//		body.append("</html> ");
+//		
+//		try {
+//			InternetAddress toAddress = new InternetAddress("tugra.er@turkcell.com.tr");
+//			message.addRecipient(Message.RecipientType.TO, toAddress);
+//			message.setSubject("Health Check Adlı Servisiniz " + String.valueOf(statusCode) + " Hatası Almaktadır.");
+//			
+//			message.setContent(body.toString(), "text/html; charset=UTF-8");
+//			String [] language = {"tr"};
+//			message.setContentLanguage(language);
+//
+//
+//		} catch (MessagingException e) {
+//			System.out.println(e);
+//		}
+//		this.mailSender.send(message);
+//	}
+//	
+//	@Override
+//	public void sendRepairFaultBlockMail(String response, int statusCode) {
+//		MimeMessage message = mailSender.createMimeMessage();
+//		
+//		StringBuilder body = new StringBuilder();
+//		body.append("<html>");
+//		body.append("<head> ");
+//		body.append("</head> ");
+//		body.append("<body> ");
+//		body.append("<p>Merhabalar, </p> ");
+//		body.append("<p>"+String.valueOf(statusCode)+ " hatası alan ve aşağıda detayı açıklanan Health Check adlı servis üzerinde yaşanan problem çözülmüştür. Bilgilerinize </p> ");
+//		body.append("<br> <br>  ");
+//		body.append("<br> <br>  ");
+//		body.append(response);
+//		body.append("</body> ");
+//		body.append("</html> ");
+//		
+//		try {
+//			InternetAddress toAddress = new InternetAddress("tugra.er@turkcell.com.tr");
+//			message.addRecipient(Message.RecipientType.TO, toAddress);
+//			message.setSubject("Health Check Adlı " + String.valueOf(statusCode) + " Hatası Alan Servisin Problemi Çözümlenmiştir.");
+//			
+//			message.setContent(body.toString(), "text/html; charset=UTF-8");
+//			String [] language = {"tr"};
+//			message.setContentLanguage(language);
+//
+//
+//		} catch (MessagingException e) {
+//			System.out.println(e);
+//		} 
+//		this.mailSender.send(message);
+//		
+//	}
+	
+	
+//	@Override
+//	public void sendBlockSaveMail(BigInteger id, String blockName, String blockDesc) {
+//		MimeMessage message = mailSender.createMimeMessage();
+//		
+//		StringBuilder body = new StringBuilder();
+//		body.append("<html>");
+//		body.append("<head> ");
+//		body.append("</head> ");
+//		body.append("<body> ");
+//		body.append("<p>Merhabalar, </p> ");
+//		body.append("<p>"+blockName +" adlı ve "+ blockDesc +" açıklamasıyla üzerinize bir blok açılmıştır. Gerekli aksiyonu aldığınız takdirde aşağıdaki linkten bloku kapatabilirsiniz.</p> ");
+//		body.append("<br> <br>  ");
+//		body.append("<br> <br>  ");
+//		body.append("<a href=\"http://localhost:8080/blockUpdate/"+String.valueOf(id)+"\">Lütfen Tıklayın</a>");
+//		body.append("</body> ");
+//		body.append("</html> ");
+//		
+//		try {
+//			InternetAddress toAddress = new InternetAddress("tugra.er@turkcell.com.tr");
+//			message.addRecipient(Message.RecipientType.TO, toAddress);
+//			message.setSubject("Üzerinize " + blockName + " adıyla bir blok açılmıştır.");
+//			
+//			message.setContent(body.toString(), "text/html; charset=UTF-8");
+//			String [] language = {"tr"};
+//			message.setContentLanguage(language);
+//		} catch (MessagingException e) {
+//			System.out.println(e);
+//		} 
+//		this.mailSender.send(message);
+//	}
+//
+//	@Override
+//	public void sendBlockUpdateMail(BlockInfoDocumentInput input) {
+//		MimeMessage message = mailSender.createMimeMessage();
+//		
+//		StringBuilder body = new StringBuilder();
+//		body.append("<html>");
+//		body.append("<head> ");
+//		body.append("</head> ");
+//		body.append("<body> ");
+//		body.append("<p>Merhabalar, </p> ");
+//		body.append("<p>"+input.getUpdateInfoList().get(0).getBlockUpdateDesc()+ " açıklamasıyla blok çözümlenmiştir. </p> ");
+//		body.append("<br> <br>  ");
+//		body.append("<br> <br>  ");
+//		body.append("</body> ");
+//		body.append("</html> ");
+//		
+//		try {
+//			InternetAddress toAddress = new InternetAddress("tugra.er@turkcell.com.tr");
+//			message.addRecipient(Message.RecipientType.TO, toAddress);
+//			message.setSubject(input.getBlockName()+" Adıyla Açılan Blokunuzun Problemi Çözümlenmiştir.");
+//			
+//			message.setContent(body.toString(), "text/html; charset=UTF-8");
+//			String [] language = {"tr"};
+//			message.setContentLanguage(language);
+//
+//
+//		} catch (MessagingException e) {
+//			System.out.println(e);
+//		} 
+//		this.mailSender.send(message);
+//		
+//	}
+	
+
+	private String createMailTemplate(String segment) throws JsonParseException, JsonMappingException, IOException {
 		Calendar calendar = Calendar.getInstance();
-		List<Document> getBlocksToday = blockDateRangeService.getBlockToday(false,0,0);
+		List<Document> getBlocksToday = blockDateRangeService.getBlockToday(false,0,0, segment);
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		calendar.set(Calendar.DAY_OF_WEEK, 2);
-		List<Document> getXLBlockForWeek = blockDateRangeService.getBlockWeek(calendar.getTimeInMillis(), false, 0,0);
+		List<Document> getXLBlockForWeek = blockDateRangeService.getBlockWeek(calendar.getTimeInMillis(), false, 0,0, segment);
 		calendar.clear();
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		int thisMonthNumber = calendar.get(Calendar.MONTH);
 		long thisMonthWorkDay = passingTimeBeetweenTwoDate(calendar.getTimeInMillis());
-		List<Document> getXLBlockThisMonth = blockDateRangeService.getBlockMonth(calendar.getTimeInMillis(), false,0,0);
+		List<Document> getXLBlockThisMonth = blockDateRangeService.getBlockMonth(calendar.getTimeInMillis(), false,0,0, segment);
 		calendar.add(Calendar.MONTH, -1);
 		int lastMonthNumber = calendar.get(Calendar.MONTH);
 		long lastMonthWorkDay = passingTimeBeetweenTwoDate(calendar.getTimeInMillis());
-		List<Document> getXLBlockLastMonth = blockDateRangeService.getBlockMonth(calendar.getTimeInMillis(),false,0,0);
+		List<Document> getXLBlockLastMonth = blockDateRangeService.getBlockMonth(calendar.getTimeInMillis(),false,0,0, segment);
 		calendar.add(Calendar.MONTH, -1);
 		int twoMonthAgoNumber = calendar.get(Calendar.MONTH);
 		long twoMonthAgoWorkDay = passingTimeBeetweenTwoDate(calendar.getTimeInMillis());
-		List<Document> getXLBlockTwoMonthAgo = blockDateRangeService.getBlockMonth(calendar.getTimeInMillis(),false,0,0);
+		List<Document> getXLBlockTwoMonthAgo = blockDateRangeService.getBlockMonth(calendar.getTimeInMillis(),false,0,0, segment);
 		
 		
 		
@@ -1114,7 +1425,7 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 		calendar.set(Calendar.MONTH, 0);
 		calendar.set(Calendar.HOUR_OF_DAY, 07);
 		calendar.set(Calendar.MINUTE, 30);
-		calculateSummaryInfo(calendar.getTimeInMillis());
+		calculateSummaryInfo(calendar.getTimeInMillis(), segment);
 		String summaryStartDate = sdf.format(new Date(calendar.getTimeInMillis()));
 		String summaryEndDate = sdf.format(new Date(System.currentTimeMillis()));
 		calendar.clear();
@@ -1427,34 +1738,13 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 		builder.append("   <th class=\"col-lg-6\" align=\"left\" valign=\"top\" style=\"line-height: 24px; font-size: 16px; min-height: 1px;  font-weight: normal; width: 100%; margin: 0;\"> ");
 
 
-		createWeekDayGeneric(builder, Calendar.MONDAY, "Pazartesi");
+		createWeekDayGeneric(builder, Calendar.MONDAY, "Pazartesi", segment);
 
 		builder.append("	</th> ");
 		builder.append("   <th class=\"col-lg-6\" align=\"left\" valign=\"top\" style=\"line-height: 24px; font-size: 16px; min-height: 1px;  font-weight: normal; width: 100%; margin: 0;\"> ");
 
 
-		createWeekDayGeneric(builder, Calendar.TUESDAY, "Salı");
-
-		builder.append("	</th> ");
-
-		builder.append("	</tr> ");
-		builder.append("	</thead> ");
-		builder.append("	</table> ");
-
-
-		builder.append("<table class=\"row\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: Helvetica, Arial, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0px; border-collapse: collapse; margin-right: -15px; margin-left: -15px; table-layout: fixed; width: 100%;\"> ");
-		builder.append(" <thead> ");
-		builder.append("    <tr> ");
-		builder.append("   <th class=\"col-lg-6\" align=\"left\" valign=\"top\" style=\"line-height: 24px; font-size: 16px; min-height: 1px;  font-weight: normal; width: 100%; margin: 0;\"> ");
-
-
-		createWeekDayGeneric(builder, Calendar.WEDNESDAY, "Çarşamba");
-
-		builder.append("	</th> ");
-		builder.append("   <th class=\"col-lg-6\" align=\"left\" valign=\"top\" style=\"line-height: 24px; font-size: 16px; min-height: 1px;  font-weight: normal; width: 100%; margin: 0;\"> ");
-
-
-		createWeekDayGeneric(builder, Calendar.THURSDAY, "Perşembe");
+		createWeekDayGeneric(builder, Calendar.TUESDAY, "Salı", segment);
 
 		builder.append("	</th> ");
 
@@ -1469,7 +1759,28 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 		builder.append("   <th class=\"col-lg-6\" align=\"left\" valign=\"top\" style=\"line-height: 24px; font-size: 16px; min-height: 1px;  font-weight: normal; width: 100%; margin: 0;\"> ");
 
 
-		createWeekDayGeneric(builder, Calendar.FRIDAY, "Cuma");
+		createWeekDayGeneric(builder, Calendar.WEDNESDAY, "Çarşamba", segment);
+
+		builder.append("	</th> ");
+		builder.append("   <th class=\"col-lg-6\" align=\"left\" valign=\"top\" style=\"line-height: 24px; font-size: 16px; min-height: 1px;  font-weight: normal; width: 100%; margin: 0;\"> ");
+
+
+		createWeekDayGeneric(builder, Calendar.THURSDAY, "Perşembe", segment);
+
+		builder.append("	</th> ");
+
+		builder.append("	</tr> ");
+		builder.append("	</thead> ");
+		builder.append("	</table> ");
+
+
+		builder.append("<table class=\"row\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"font-family: Helvetica, Arial, sans-serif; mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-spacing: 0px; border-collapse: collapse; margin-right: -15px; margin-left: -15px; table-layout: fixed; width: 100%;\"> ");
+		builder.append(" <thead> ");
+		builder.append("    <tr> ");
+		builder.append("   <th class=\"col-lg-6\" align=\"left\" valign=\"top\" style=\"line-height: 24px; font-size: 16px; min-height: 1px;  font-weight: normal; width: 100%; margin: 0;\"> ");
+
+
+		createWeekDayGeneric(builder, Calendar.FRIDAY, "Cuma", segment);
 
 		builder.append("	</th> ");
 		builder.append("   <th class=\"col-lg-6\" align=\"left\" valign=\"top\" style=\"line-height: 24px; font-size: 16px; min-height: 1px; font-weight: normal; width: 100%; margin: 0;\"> ");
@@ -1716,13 +2027,13 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 //	}
 
 
-	private void createWeekDayGeneric(StringBuilder builder, int weekDay, String weekDayLabel) throws IOException {
+	private void createWeekDayGeneric(StringBuilder builder, int weekDay, String weekDayLabel, String segment) throws IOException {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		calendar.set(Calendar.DAY_OF_WEEK, weekDay);
 		String pastDate = sdf.format(new Date(calendar.getTimeInMillis()));
 		long timeMilis = calendar.getTimeInMillis();
-		List<Document> getWeekDayBlock = blockDateRangeService.getBlockOfParameter(timeMilis, timeMilis,0,0);
+		List<Document> getWeekDayBlock = blockDateRangeService.getBlockOfParameter(timeMilis, timeMilis,0,0, segment);
 
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		newWeekTodayXLB(builder, getWeekDayBlock, pastDate, weekDayLabel, calendar.get(Calendar.DAY_OF_WEEK) < weekDay);
@@ -1966,8 +2277,8 @@ public class BlockSendMailServiceImpl implements BlockSendMailService {
 		return result;
 	}
 	
-	private void calculateSummaryInfo(long startTimeMilis) {
-		List<Document> getAllBlockListWithoutStatus = blockDateRangeService.getBlockForAllStatus(startTimeMilis, System.currentTimeMillis());
+	private void calculateSummaryInfo(long startTimeMilis, String segment) {
+		List<Document> getAllBlockListWithoutStatus = blockDateRangeService.getBlockForAllStatus(startTimeMilis, System.currentTimeMillis(), segment);
 		List<String> tempList = new ArrayList<>();
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(startTimeMilis);
